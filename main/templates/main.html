@@ -1,8 +1,233 @@
-<h1>HomifyInc</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomifyInc Main Page</title>
 
-<h5>NPM: </h5>
-<p>{{ npm }}<p>
-<h5>Name: </h5>
-<p>{{ name }}<p>
-<h5>Class: </h5>
-<p>{{ class }}<p>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Archivo', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .toppanel {
+            width: 500px;
+            height: 100vh;
+            background-color: #FFFFFF;
+            position: absolute;
+            z-index: 3;
+            left: -500px;
+            transition: left 0.4s;
+            overflow: hidden;
+        }
+
+        .imgprofile {
+            position: absolute;
+            top: -215px;
+            left: 1225px;
+            cursor: pointer;
+            transform: scale(0.09);
+            transition: transform 0.2s;
+        }
+
+        .imgprofile:hover {
+            transform: scale(0.1);
+        }
+
+        .mainrectangle {
+            width: 100vw;
+            height: 250px;
+            background-color: #ADD8E6;
+            position: absolute;
+            top: 75px;
+            left: 0;
+        }
+
+        .sidebar {
+            width: 23px;
+            height: 4px;
+            background-color: #616161;
+            position: absolute;
+            border-radius: 4px;
+            left: 28px;
+            opacity: 0.4;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .shadowsidebar {
+            width: 34px;
+            height: 34px;
+            background-color: #616161;
+            position: absolute;
+            border-radius: 4px;
+            top: 30px;
+            left: 23px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .rectangle1 {
+            top: 37px;
+        }
+
+        .rectangle2 {
+            top: 45px;
+        }
+
+        .rectangle3 {
+            top: 53px;
+        }
+
+        .textlogo {
+            font-size: 30px;
+            font-weight: 700;
+            font-style: normal;
+            color: #000000;
+            letter-spacing: -1px;
+            position: absolute;
+            top: 30px;
+            width: 100%;
+        }
+
+        .textlogo1 {
+            left: 80px;
+        }
+
+        .textlogo2 {
+            left: 19px;
+        }
+
+        .textintro {
+            font-size: 14px;
+            font-weight: 500;
+            color: #000000;
+            position: absolute;
+            letter-spacing: -0.5px;
+            top: 65px;
+            left: 20px;
+        }
+
+        .textmenu {
+            font-size: 18px;
+            font-weight: 600;
+            color: #000000;
+            position: absolute;
+            top: 42px;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .textmenu:hover {
+            color: #FFA500;
+        }
+
+        .texthome {
+            left: 1140px;
+        }
+
+        .textproduct {
+            left: 1240px;
+        }
+
+        .textabout {
+            left: 1355px;
+        }
+
+        .textcomingsoon {
+            font-size: 22px;
+            font-weight: 700;
+            font-style: normal;
+            color: #000000;
+            letter-spacing: -0.5px;
+            position: absolute;
+            text-align: center;
+            left: 50%;
+            transform: translateX(-50%) scale(1);
+            top: 180px;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .textcomingsoon:hover {
+            color: #FFA500;
+            transform: translateX(-50%) scale(1.1);;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="mainrectangle"></div>
+    <div class="shadowsidebar"></div>
+    <div class="toppanel">
+        <div class="textlogo textlogo2">{{ app }}</div>
+        <div class="textintro">Made by {{ name }} from {{ class }}</div>
+    </div>
+    <div class="sidebar rectangle1"></div>
+    <div class="sidebar rectangle2"></div>
+    <div class="sidebar rectangle3"></div>
+    <div class="textcomingsoon">Stay Tune for Full Features!</div>
+    <div class="textlogo textlogo1">{{ app }}</div>
+    <div class="textmenu texthome">Home</div>
+    <div class="textmenu textproduct">Product</div>
+    <div class="textmenu textabout">About</div>
+    <img src="profile.png" alt="Image" class="imgprofile">
+    <div id="overlay" class="overlay"></div>
+
+    <script>
+        const overlay = document.getElementById('overlay');
+        const shadowsidebar = document.querySelector('.shadowsidebar');
+        const toppanel = document.querySelector('.toppanel');
+
+        const toggleOverlay = () => {
+            if (overlay.classList.contains('active')) {
+                overlay.classList.remove('active');
+                toppanel.style.left = '-500px';
+            } else {
+                overlay.classList.add('active');
+                toppanel.style.left = '0';
+            }
+        };
+
+        shadowsidebar.addEventListener('mouseover', () => {
+            shadowsidebar.style.opacity = 0.1;
+        });
+
+        shadowsidebar.addEventListener('mouseout', () => {
+            shadowsidebar.style.opacity = 0;
+        });
+
+        shadowsidebar.addEventListener('click', toggleOverlay);
+
+        overlay.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            toppanel.style.left = '-500px';
+        });
+    </script>
+</body>
+</html>
