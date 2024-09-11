@@ -1,30 +1,37 @@
-Nama: Nabil Zahid Rahman
-NPM: 2306203324
-Kelas: PBP-A
+- Nama: Nabil Zahid Rahman
+- NPM: 2306203324
+- Kelas: PBP-A
 
 ## Jawaban Soal Nomor 1
-# Initialisasi Proyek Django
+### Initialisasi Proyek Django
 1. Membuat proyek Django baru dimulai dengan membuat direktori yang menyimpan berkas proyek dan membuat virtual environment di dalamnya.
-2. Melakukan instalasi dependensi pada requirements.txt, pembatasan konten Git pada .gitignore, dan inisiasi app itu sendiri yang mengandung urls, wsgi, dsb.
-# Initialisasi Aplikasi Main
+2. Melakukan instalasi dependensi pada ```requirements.txt```, pembatasan konten Git pada ```.gitignore```, dan inisiasi app itu sendiri yang mengandung urls, wsgi, dsb.
+### Initialisasi Aplikasi Main
 3. Membuat aplikasi main dalam framework Django yang antarfile nya kemudian dikaitkan.
-4. Mengkonfigurasi host yang diizinkan dan app yang terinstall pada file settings di dalam e_commerce.
-# Routing Pada Proyek
+4. Mengkonfigurasi host yang diizinkan dan app yang terinstall pada file settings di dalam ```e_commerce```.
+### Routing Pada Proyek
 5. Menghubungkan file views untuk menampilkan konten yang di-assign pada variable.
 6. Menghubungkan urls pada main dan urls pada e_commerce agar dapat menampilkan konten di main.
 7. Menghubungkan models pada main untuk mendaftarkan atribut pada konten main ke depannya, yakni nama, harga, dan deskripsi.
-# Modelling Pada Aplikasi Main
+### Modelling Pada Aplikasi Main
 8. Membuat class Product yang meng-inherit models.Model untuk mendaftarkan atribut nama, harga, dan deskripsi
 9. Menginitialisasi atribut dari class tergantung Field-nya. Misal: Nama dalam CharField, Price dalam IntegerField, dan Description dalam TextField.
-# Fungsi views.py yang Menghubungkan Pada Template HTML
+### Fungsi ```views.py``` yang Menghubungkan Pada Template HTML
 10. Menginisiasi 3 properti, yakni nama aplikasi (app), nama lengkap (name), dan kelas (class) dengan isian yang sesuai.
-11. Me-return value dari ketiga properti tersebut pada main.html, yakni ditulis dengan {{ app }}, {{ name }}, dan {{ class }}.
-# Routing urls.py yang Menghubungkan views.py
-12. Meng-import method show_main pada views.py ke urls.py agar dapat di-return di main.
-# Deployment ke PWS
+11. Me-return value dari ketiga properti tersebut pada ```main.html```, yakni ditulis dengan {{ app }}, {{ name }}, dan {{ class }}.
+### Routing urls.py yang Menghubungkan ```views.py```
+12. Meng-import method show_main pada ```views.py``` ke ```urls.py``` agar dapat di-return di main.
+### Deployment ke PWS
 13. Membuat sebuah proyek PWS baru dengan path berupa nama aplikasi (HomifyInc).
 14. Menghubungkan PWS dengan git lokal dengan menambahkan remote.
-15. Melakukan add, commit, dan push ke GitHub dan PWS untuk menjalankan main.html yang telah dibuat.
+15. Melakukan add, commit, dan push ke GitHub dan PWS untuk menjalankan ```main.html``` yang telah dibuat.
+
+## Jawaban Soal Nomor 2
+Alur: Client -> ```urls.py``` -> ```views.py``` -> ```models.py``` -> HTML PAGE
+1. Ketika seorang klien mengirimkan permintaan HTTP ke aplikasi Django, langkah pertama yang dilakukan Django adalah memeriksa file urls.py untuk menemukan URL yang sesuai dengan permintaan tersebut dan menentukan view mana yang akan menangani prosesnya.
+2. Setelah URL ditemukan dan dipetakan ke view tertentu, Django memanggil fungsi view tersebut. Di dalam fungsi view, biasanya terdapat logika untuk mengolah data, yang seringkali diambil dari database melalui model yang sudah didefinisikan dalam file ```models.py```.
+3. Jika view membutuhkan data dari database, fungsi ini akan berkomunikasi dengan model untuk mengambil atau menyimpan informasi yang relevan.
+4. Setelah semua data diproses di view, hasil akhirnya dikirim ke template untuk dirender menjadi halaman HTML yang lengkap, yang kemudian dikirimkan kembali ke klien sebagai respons atas permintaan mereka.
 
 ## Jawaban Soal Nomor 3
 Git adalah sistem kontrol yang memungkinkan pengembang perangkat lunak untuk bekerja secara kolaboratif terkait proyek penulisan kode. Dengan Git, setiap perubahan yang dilakukan pada kode dapat dicatat dalam repositori, memudahkan untuk kembali ke versi sebelumnya jika diperlukan. Fitur cabang dan penggabungan (branching dan merging) memungkinkan pengembang untuk mengerjakan fitur baru atau perbaikan tanpa mempengaruhi kode utama secara langsung. Selain itu, Git juga memfasilitasi kolaborasi tim dengan memungkinkan beberapa pengembang untuk bekerja pada proyek yang sama secara bersamaan sehingga pembagian kerja dapat diatur secara efektif.
