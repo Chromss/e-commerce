@@ -399,12 +399,12 @@
             <div class="maintext">Add, Customize Your Item</div>
             <div class="subtext">You can add your collection along with its image, description, price, and variety.</div>
             <div class="context name">Product Name</div>
-            <input class="shortinput productname" name="product_name" placeholder="Enter your product name">
+            <input class="shortinput productname" name="name" placeholder="Enter your product name">
             <div class="context desc">Product Description</div>
-            <textarea class="longinput productdesc" name="product_description" placeholder="Enter your product description"></textarea>
+            <textarea class="longinput productdesc" name="description" placeholder="Enter your product description"></textarea>
             <div class="context image">Product Image</div>
             <div class="imageframe">
-                <input type="file" name="product_image" id="filein" style="display: none;" accept=".png, .jpg, .jpeg">
+                <input type="file" name="image" id="filein" style="display: none;" accept=".png, .jpg, .jpeg" required>
                 <button class="imagebtn upload" id="upload" type="button">Upload</button>
                 <button class="imagebtn delete" id="delete" type="button">Delete</button>
                 <div class="images-container" id="imagesContainer"></div>
@@ -415,19 +415,23 @@
                 <div class="imagesubtext ist2">*Maximum number of image is reached!</div>
             </div>
             <div class="context variation">Product Variation</div>
-            <div class="variationframe">
-                <button class="varbutton" type="button">Add Variation</button>
-                <input class="varinput" name="variation" placeholder="Write your variation...">
+            <div class="variationframe" method="post" enctype="multipart/form-data">
+                <button class="varbutton" type="button" id="variety">Add Variation</button>
+                <input class="varinput" id="varvalue" placeholder="Write your variation...">
                 <div class="varline"></div>
                 <div class="vars-container"></div>
             </div>
-            <button class="mainbutton save" id="save" type="button">Save</button>
+            <button class="mainbutton save" id="save" type="submit">Save</button>
             <button class="mainbutton back" id="back" type="button">Back</button>
         </div>
+        <input type="hidden" name="countVar" id="countVar" value="0">
+        <input type="hidden" name="averageVal" id="averageVal" value="0">
     </form>
 
     <script>
         let selectedImage = null;
+        let countVar = 0;
+        let averageVal = 0;
 
         const uploadButton = document.getElementById('upload');
         const deleteButton = document.getElementById('delete');
@@ -437,6 +441,8 @@
         const fileIn = document.getElementById('filein');
         const imagePreview = document.getElementById('imagePreview');
         const inventoryForm = document.getElementById('inventoryForm');
+        const variety = document.getElementById('variety');
+        const varValue = document.getElementById('varvalue')
         
         const varButton = document.querySelector('.varbutton');
         const sifText = document.querySelector('.siftext');
@@ -467,6 +473,11 @@
             return `${style}: IDR${formattedPrice}`;
         }
 
+        function updateHiddenInputs() {
+            document.getElementById('countVar').value = countVar;
+            document.getElementById('averageVal').value = averageVal;
+        }
+        
         document.addEventListener('click', function(event) {
             if (selectedImage && !selectedImage.contains(event.target) && !deleteButton.contains(event.target)) {
                 selectedImage.style.borderColor = '#E3E3E3';
@@ -590,6 +601,7 @@
 
                 xFrame.addEventListener('click', function() {
                     varPreview.remove();
+                    countVar--;
                 });
 
                 varInput.value = '';
@@ -599,14 +611,22 @@
         });
 
         saveButton.addEventListener('click', (event) => {
-            event.preventDefault(); // Prevent form submission
             alert('New inventory has been added!');
-            window.location.href = '{% url "main:show_main" %}';
+            averageVal /= 3;
+            averageVal = Math.round(averageVal);
+            updateHiddenInputs();
         });
 
         backButton.addEventListener('click', (event) => {
-            event.preventDefault(); // Prevent form submission
             window.location.href = '{% url "main:show_main" %}';
+        });
+
+        variety.addEventListener('click', (event) => {
+            if (varValue.trim() != '') {
+                countVar++;
+                averageVal += parseInt(varValue.value.split(':')[1]);
+                updateHiddenInputs();
+            }
         });
     </script>    
 </body>

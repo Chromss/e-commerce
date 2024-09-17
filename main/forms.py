@@ -1,12 +1,7 @@
-from django import forms
-from .models import Product, Variation
+from django.forms import ModelForm
+from main.models import Product
 
-class ProductForm(forms.ModelForm):
+class ProductForm(ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'image']
-
-class VariationForm(forms.ModelForm):
-    class Meta:
-        model = Variation
-        fields = ['variation_type', 'price']
+        fields = ['name', 'description', 'image', 'variation_count', 'average_price']

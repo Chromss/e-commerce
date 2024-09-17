@@ -1,3 +1,4 @@
+{% load humanize %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +28,7 @@
         .searchframe {
             width: 100vw;
             height: 60px;
-            z-index: 1;
+            z-index: 2;
             background-color: #ADD8E6;
             position: fixed;
         }
@@ -119,24 +120,16 @@
             color: #FFA500;
         }
 
-        .test {
-            font-weight: 700;
-            font-size: 40px;
-            letter-spacing: -0.5px;
-            left: 50px;
-            top: 1000px;
-            position: absolute;
-        }
-
         .productframe {
-            position: absolute;
+            display: inline-block;
+            position: relative;
             background-color: #FFD26D;
             box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
             border-radius: 12px;
-            margin-right: 32px;
-            margin-bottom: 32px;
             width: 330px;
             height: 250px;
+            margin-right: 32px;
+            margin-bottom: 32px;
         }
 
         .pictframe {
@@ -221,18 +214,6 @@
             font-size: 14px;
         }
 
-        .pf1 {
-            left: 362px;
-        }
-
-        .pf2 {
-            left: 724px;
-        }
-
-        .pf3 {
-            left: 1086px;
-        }
-
         .bold {
             font-weight: 700;
         }
@@ -247,14 +228,15 @@
     </div>
     <div class="maintext">Our Top Products</div>
     <div class="mainline"></div>
-    <div class="test">Test</div>
     <div class="mainframe">
         {% if products %}
             {% for product in products %}
                 <div class="productframe">
                     <div class="pictframe">
                         {% if product.image %}
+                            <!--
                             <img class="pictpreview" src="{{ product.image.url }}" alt="{{ product.name }}">
+                            -->
                         {% endif %}
                     </div>
                     <div class="textframe">
@@ -262,7 +244,7 @@
                             <div class="pname">{{ product.name }}</div>
                             <div class="pframe">
                                 <div class="pprop">Variations: <span class="bold">{{ product.variation_count }}</span></div>
-                                <div class="pprop">Price: IDR<span class="bold">{{ product.average_price|floatformat:0 }}</span></div>
+                                <div class="pprop">Price: IDR<span class="bold">{{ product.average_price|intcomma }}</span></div>
                             </div>
                             <div class="pdesc">{{ product.description }}</div>
                         </div>
