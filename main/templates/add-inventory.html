@@ -1,0 +1,613 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
+    <title>Add Inventory | HomifyInc</title>
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Archivo', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .mainframe {
+            height: 115vh;
+            width: 800px;
+            left: 50%;
+            background-color: #ADD8E6;
+            position: absolute;
+            transform: translateX(-50%);
+        }
+
+        .maintext {
+            font-weight: 700;
+            font-size: 32px;
+            letter-spacing: -0.5px;
+            left: 50%;
+            top: 35px;
+            position: absolute;
+            transform: translateX(-50%);
+        }
+
+        .subtext {
+            font-weight: 500;
+            font-size: 16px;
+            letter-spacing: -0.5px;
+            left: 50%;
+            top: 70px;
+            position: absolute;
+            white-space: nowrap;
+            transform: translateX(-50%);
+        }
+
+        .context {
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.5px;
+            position: absolute;
+        }
+
+        .name {
+            top: 150px;
+            left: 30px;
+        }
+
+        .desc {
+            top: 220px;
+            left: 30px;
+        }
+
+        .variation {
+            top: 420px;
+            left: 30px;
+        }
+
+        .image {
+            top: 150px;
+            left: 480px;
+        }
+
+        .imagesubtext {
+            font-weight: 500;
+            letter-spacing: -0.5px;
+            position: absolute;
+            white-space: nowrap;
+        }
+
+        .ist1 {
+            font-size: 14px;
+            left: 20px;
+            top: 160px;
+        }
+
+        .ist2 {
+            font-size: 12px;
+            font-style: italic;
+            color: #FF0000;
+            left: 10px;
+            top: 215px;
+        }
+
+        .shortinput {
+            padding: 8px;
+            left: 25px;
+            border: 1px solid #D3D3D3;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #333333;
+            background-color: #F9F9F9;
+            outline: none;
+            position: absolute;
+            transition: all 0.1s ease;
+        }
+
+        .shortinput:focus {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .shortinput::placeholder {
+            color: #999999;
+        }
+
+        .longinput {
+            font-family: 'Archivo', sans-serif;
+            padding: 8px;
+            left: 25px;
+            font-size: 16px;
+            border: 1px solid #D3D3D3;
+            border-radius: 10px;
+            color: #333333;
+            background-color: #F9F9F9;
+            outline: none;
+            resize: none;
+            position: absolute;
+            transition: all 0.1s ease;
+        }
+
+        .longinput:focus {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .longinput::placeholder {
+            color: #999999;
+        }
+
+        .productname {
+            top: 170px;
+            width: 400px;
+        }
+
+        .productdesc {
+            top: 240px;
+            width: 400px;
+            height: 150px;
+        }
+
+        .variationframe {
+            background-color: #F9F9F9;
+            height: 230px;
+            width: 750px;
+            top: 440px;
+            left: 50%;
+            border-radius: 10px;
+            position: absolute;
+            border: 1px solid #D3D3D3;
+            transform: translateX(-50%);
+        }
+
+        .varline {
+            position: absolute;
+            width: 720px;
+            height: 1px;
+            top: 40px;
+            left: 50%;
+            background-color: #D3D3D3;
+            transform: translateX(-50%);
+        }
+
+        .vars-container {
+            position: absolute;
+            width: 735px;
+            height: 180px;
+            top: 45px;
+            left: 15px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .varbutton {
+            font-family: 'Archivo', sans-serif;
+            position: absolute;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            border-radius: 8px;
+            width: 110px;
+            height: 28px;
+            top: 8px;
+            left: 15px;
+            cursor: pointer;
+            background-color: #FFA500;
+            left: 20px;
+            border: 0px;
+            transition: all 0.1s ease;
+        }
+
+        .varinput {
+            top: 12px;
+            left: 140px;
+            width: 585px;
+            border: 0px;
+            font-size: 16px;
+            color: #333333;
+            background-color: #F9F9F9;
+            outline: none;
+            position: absolute;
+            transition: all 0.1s ease;
+        }
+
+        .varpreview {
+            display: inline-block;
+            position: relative;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            height: 25px;
+            border-radius: 10px;
+            padding-left: 8px;
+            padding-right: 35px;
+            border: 1px solid #FFA500;
+            background-color: #E6E6E6;
+        }
+
+        .vptext {
+            font-size: 13px;
+            padding-top: 5px;
+            padding-left: 8px;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+        }
+
+        .xsign {
+            position: absolute;
+            width: 10px;
+            height: 1.5px;
+            right: 14px;
+            top: 11px;
+            background-color: #333333;
+        }
+
+        .xframe {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            right: 15px;
+            top: 8px;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .x1 {
+            rotate: 45deg;
+        }
+
+        .x2 {
+            rotate: 135deg;
+        }
+
+        .imageframe {
+            background-color: #F9F9F9;
+            height: 236px;
+            width: 295px;
+            top: 170px;
+            left: 475px;
+            border-radius: 10px;
+            position: absolute;
+            border: 1px solid #D3D3D3;
+        }
+
+        .subimageframe {
+            position: absolute;
+            border: 2px dashed #D3D3D3;
+            border-radius: 6px;
+            width: 262px;
+            height: 130px;
+            top: 15px;
+            left: 15px;
+            display: block;
+        }
+
+        .images-container {
+            position: absolute;
+            width: 280px;
+            height: 130px;
+            top: 15px;
+            left: 15px;
+        }
+
+        .imagepreview {
+            width: 45px;
+            height: 45px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            object-fit: cover;
+            border: 2px solid #E3E3E3;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .imagepreview:hover {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .siftext {
+            position: absolute;
+            white-space: nowrap;
+            opacity: 0.3;
+            font-size: 16px;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        .imagebtn {
+            font-family: 'Archivo', sans-serif;
+            position: absolute;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            border-radius: 8px;
+            width: 122px;
+            height: 30px;
+            top: 180px;
+            transition: all 0.1s ease;
+        }
+
+        .upload {
+            cursor: pointer;
+            background-color: #FFA500;
+            left: 20px;
+            border: 0px;
+        }
+
+        .upload:hover {
+            background-color: #E2980F;
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .delete {
+            color: rgba(113, 113, 113, 0.4);
+            background-color: #E6E6E6;
+            left: 154px;
+            border: 2px solid rgba(255, 165, 0, 0.2);
+        }
+
+        .mainbutton {
+            font-family: 'Archivo', sans-serif;
+            position: absolute;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            border-radius: 8px;
+            width: 200px;
+            height: 35px;
+            top: 740px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .mainbutton:hover {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .save {
+            background-color: #FFA500;
+            left: 195px;
+            border: 0px;
+        }
+
+        .save:hover {
+            background-color: #E2980F;
+        }
+
+        .back {
+            background-color: #E6E6E6;
+            right: 195px;
+            border: 2px solid rgba(255, 165, 0, 1);
+        }
+
+        .back:hover {
+            background-color: #D8D8D8;
+        }
+    </style>
+</head>
+<body>
+    <form action="{% url 'main:show_add_inventory' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mainframe">
+            <div class="maintext">Add, Customize Your Item</div>
+            <div class="subtext">You can add your collection along with its image, description, price, and variety.</div>
+            <div class="context name">Product Name</div>
+            <input class="shortinput productname" name="product_name" placeholder="Enter your product name">
+            <div class="context desc">Product Description</div>
+            <textarea class="longinput productdesc" name="product_description" placeholder="Enter your product description"></textarea>
+            <div class="context image">Product Image</div>
+            <div class="imageframe">
+                <input type="file" name="product_image" id="filein" style="display: none;" accept=".png, .jpg, .jpeg">
+                <button class="imagebtn upload" id="upload" type="button">Upload</button>
+                <button class="imagebtn delete" id="delete" type="button">Delete</button>
+                <div class="images-container" id="imagesContainer"></div>
+                <div class="subimageframe" id="sif">
+                    <div class="siftext">No uploaded image</div>
+                </div>
+                <div class="imagesubtext ist1">Number of image: 0 (up to 10)</div>
+                <div class="imagesubtext ist2">*Maximum number of image is reached!</div>
+            </div>
+            <div class="context variation">Product Variation</div>
+            <div class="variationframe">
+                <button class="varbutton" type="button">Add Variation</button>
+                <input class="varinput" name="variation" placeholder="Write your variation...">
+                <div class="varline"></div>
+                <div class="vars-container"></div>
+            </div>
+            <button class="mainbutton save" id="save" type="button">Save</button>
+            <button class="mainbutton back" id="back" type="button">Back</button>
+        </div>
+    </form>
+
+    <script>
+        let selectedImage = null;
+
+        const uploadButton = document.getElementById('upload');
+        const deleteButton = document.getElementById('delete');
+        const saveButton = document.getElementById('save');
+        const backButton = document.getElementById('back');
+        const imagesContainer = document.getElementById('imagesContainer');
+        const fileIn = document.getElementById('filein');
+        const imagePreview = document.getElementById('imagePreview');
+        const inventoryForm = document.getElementById('inventoryForm');
+        
+        const varButton = document.querySelector('.varbutton');
+        const sifText = document.querySelector('.siftext');
+        const ist1 = document.querySelector('.ist1');
+        const ist2 = document.querySelector('.ist2');
+    
+        function updateImageCount() {
+            const imageCount = imagesContainer.children.length;
+            ist1.textContent = `Number of image: ${imageCount} (up to 10)`;
+        }
+
+        function updateState() {
+            if (imagesContainer.children.length >= 10) {
+                uploadButton.disabled = true;
+                ist2.style.display = 'block';
+            } else {
+                uploadButton.disabled = false;
+                ist2.style.display = 'none';
+            }
+            updateImageCount();
+        }
+
+        function formatPrice(query) {
+            const parts = query.split(':');
+            const style = parts[0].trim();
+            const price = parseInt(parts[1].trim(), 10);
+            const formattedPrice = price.toLocaleString('en-ID');
+            return `${style}: IDR${formattedPrice}`;
+        }
+
+        document.addEventListener('click', function(event) {
+            if (selectedImage && !selectedImage.contains(event.target) && !deleteButton.contains(event.target)) {
+                selectedImage.style.borderColor = '#E3E3E3';
+                selectedImage = null;
+
+                deleteButton.disabled = true;
+                deleteButton.style.cursor = 'auto';
+                deleteButton.style.color = 'rgba(113, 113, 113, 0.4)';
+                deleteButton.style.border = '2px solid rgba(255, 165, 0, 0.2)';
+            }
+        });
+
+        uploadButton.addEventListener('click', function() {
+            if (imagesContainer.children.length < 10) {
+                fileIn.click();
+                ist2.style.display = 'none';
+            } else {
+                ist2.style.display = 'block';
+            }
+        });
+
+        deleteButton.addEventListener('click', function() {
+            if (selectedImage) {
+                imagesContainer.removeChild(selectedImage);
+                selectedImage = null;
+
+                deleteButton.disabled = true;
+                deleteButton.style.cursor = 'auto';
+                deleteButton.style.color = 'rgba(113, 113, 113, 0.4)';
+                deleteButton.style.border = '2px solid rgba(255, 165, 0, 0.2)';
+                
+                if (imagesContainer.children.length === 0) {
+                    const subimageframe = document.querySelector('.subimageframe');
+                    subimageframe.style.display = 'block';
+                }
+
+                if (imagesContainer.children.length === 10) {
+                    ist2.style.display = 'none';
+                }
+                
+                updateState();
+            }
+        });
+    
+        fileIn.addEventListener('change', function(event) {
+            const files = event.target.files;
+            const subimageframe = document.querySelector('.subimageframe');
+    
+            if (files.length > 0) {
+                subimageframe.style.display = 'none';
+            } else {
+                subimageframe.style.display = 'block';
+            }
+    
+            Array.from(files).forEach(file => {
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const image = new Image();
+                        image.onload = function() {
+                            if (image.width >= 128 && image.height >= 128) {
+                                if (imagesContainer.children.length < 10) {
+                                    const imgElement = document.createElement('img');
+                                    imgElement.src = e.target.result;
+                                    imgElement.className = 'imagepreview';
+                                    
+                                    imgElement.addEventListener('click', function() {
+                                        if (selectedImage) {
+                                            selectedImage.style.borderColor = '#E3E3E3';
+                                        }
+                                        selectedImage = imgElement;
+                                        imgElement.style.borderColor = 'rgba(255, 165, 0, 0.6)';
+                                        deleteButton.disabled = false;
+                                        deleteButton.style.cursor = 'pointer';
+                                        deleteButton.style.border = '2px solid rgba(255, 165, 0, 1)';
+                                        deleteButton.style.color = 'rgba(0, 0, 0, 1)';
+                                    });
+
+                                    imagesContainer.appendChild(imgElement);
+                                    updateImageCount();
+                                } else {
+                                    ist2.style.display = 'block';
+                                }
+                            } else {
+                                alert('Please upload an image with at least 128x128 pixels.');
+                            }
+                        };
+                        image.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        updateState();
+
+        varButton.addEventListener('click', function() {
+            const varInput = document.querySelector('.varinput');
+            const varValue = varInput.value.trim();
+
+            if (varValue && varValue.length <= 50) {
+                const varsContainer = document.querySelector('.vars-container');
+                const varPreview = document.createElement('div');
+                const vpText = document.createElement('div');
+                const xSign1 = document.createElement('div');
+                const xSign2 = document.createElement('div');
+                const xFrame = document.createElement('div');
+
+                varPreview.className = 'varpreview';
+                vpText.className = 'vptext';
+                vpText.textContent = formatPrice(varValue);
+                xFrame.className = 'xframe';
+                xSign1.className = 'xsign x1';
+                xSign2.className = 'xsign x2';
+
+                varPreview.appendChild(vpText);
+                varPreview.appendChild(xFrame);
+                varPreview.appendChild(xSign1);
+                varPreview.appendChild(xSign2);
+                varsContainer.appendChild(varPreview);
+
+                xFrame.addEventListener('click', function() {
+                    varPreview.remove();
+                });
+
+                varInput.value = '';
+            } else {
+                alert('Please enter a valid variation text (max 50 characters).');
+            }
+        });
+
+        saveButton.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent form submission
+            alert('New inventory has been added!');
+            window.location.href = '{% url "main:show_main" %}';
+        });
+
+        backButton.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent form submission
+            window.location.href = '{% url "main:show_main" %}';
+        });
+    </script>    
+</body>
+</html>

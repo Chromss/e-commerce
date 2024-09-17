@@ -1,11 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HomifyInc Main Page</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
+    <title>Welcome to HomifyInc!</title>
 
     <style>
         body, html {
@@ -17,12 +21,12 @@
         }
 
         .toppanel {
-            width: 500px;
+            width: 300px;
             height: 100vh;
+            z-index: 2;
+            left: -300px;
             background-color: #FFFFFF;
             position: absolute;
-            z-index: 3;
-            left: -500px;
             transition: left 0.4s;
             overflow: hidden;
         }
@@ -30,7 +34,7 @@
         .imgprofile {
             position: absolute;
             top: -215px;
-            left: 1225px;
+            left: 1215px;
             cursor: pointer;
             transform: scale(0.09);
             transition: transform 0.2s;
@@ -43,36 +47,39 @@
         .mainrectangle {
             width: 100vw;
             height: 250px;
+            top: 75px;
             background-color: #ADD8E6;
             position: absolute;
-            top: 75px;
-            left: 0;
         }
 
         .sidebar {
             width: 23px;
             height: 4px;
-            background-color: #616161;
-            position: absolute;
             border-radius: 4px;
             left: 28px;
             opacity: 0.4;
+            background-color: #616161;
+            position: absolute;
             cursor: pointer;
-            z-index: 1;
+            
         }
 
         .shadowsidebar {
-            width: 34px;
-            height: 34px;
             background-color: #616161;
             position: absolute;
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
             border-radius: 4px;
             top: 30px;
             left: 23px;
             opacity: 0;
+            z-index: 1;
             transition: opacity 0.3s;
-            cursor: pointer;
-            z-index: 2;
+        }
+
+        .shadowsidebar:hover {
+            opacity: 0.1;
         }
 
         .rectangle1 {
@@ -91,7 +98,6 @@
             font-size: 30px;
             font-weight: 700;
             font-style: normal;
-            color: #000000;
             letter-spacing: -1px;
             position: absolute;
             top: 30px;
@@ -109,7 +115,6 @@
         .textintro {
             font-size: 14px;
             font-weight: 500;
-            color: #000000;
             position: absolute;
             letter-spacing: -0.5px;
             top: 65px;
@@ -119,7 +124,6 @@
         .textmenu {
             font-size: 18px;
             font-weight: 600;
-            color: #000000;
             position: absolute;
             top: 42px;
             letter-spacing: -0.5px;
@@ -144,33 +148,51 @@
         }
 
         .textcomingsoon {
+            font-style: normal;
+            position: absolute;
+            cursor: pointer;
             font-size: 22px;
             font-weight: 700;
-            font-style: normal;
-            color: #000000;
             letter-spacing: -0.5px;
-            position: absolute;
-            text-align: center;
             left: 50%;
-            transform: translateX(-50%) scale(1);
-            top: 180px;
-            cursor: pointer;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%) scale(1);
             transition: color 0.2s, transform 0.2s;
         }
 
         .textcomingsoon:hover {
             color: #FFA500;
-            transform: translateX(-50%) scale(1.1);;
+            transform: translateX(-50%) translateY(-50%) scale(1.1);;
+        }
+
+        .texttoppanel {
+            position: absolute;
+            font-size: 22;
+            font-weight: 500;
+            left: 20px;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .texttoppanel:hover {
+            color: #FFA500;
+        }
+
+        .ttp1 {
+            top: 100px;
+        }
+
+        .ttp2 {
+            top: 125px;
         }
 
         .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
             width: 100vw;
             height: 100vh;
             background-color: rgba(0, 0, 0, 0.5);
             opacity: 0;
+            position: fixed;
             pointer-events: none;
             transition: opacity 0.4s;
         }
@@ -181,53 +203,62 @@
         }
     </style>
 </head>
+{% endblock head %}
+
+{% block content %}
 <body>
-    <div class="mainrectangle"></div>
-    <div class="shadowsidebar"></div>
-    <div class="toppanel">
-        <div class="textlogo textlogo2">{{ app }}</div>
-        <div class="textintro">Made by {{ name }} from {{ class }}</div>
+    <div class="mainrectangle">
+        <div class="textcomingsoon">Stay Tune for Full Features!</div>
     </div>
+    <div class="toppanel">
+        <div class="textlogo textlogo2">HomifyInc</div>
+        <div class="textintro">Made by Nabil Zahid Rahman from PBP-A</div>
+        <div class="texttoppanel ttp1" id="add-inventory">Add Inventory</div>
+        <div class="texttoppanel ttp2">Edit Inventory</div>
+    </div>
+    <div class="shadowsidebar"></div>
     <div class="sidebar rectangle1"></div>
     <div class="sidebar rectangle2"></div>
     <div class="sidebar rectangle3"></div>
-    <div class="textcomingsoon">Stay Tune for Full Features!</div>
-    <div class="textlogo textlogo1">{{ app }}</div>
+    <div class="textlogo textlogo1">HomifyInc</div>
     <div class="textmenu texthome">Home</div>
-    <div class="textmenu textproduct">Product</div>
+    <div class="textmenu textproduct" id="product">Product</div>
     <div class="textmenu textabout">About</div>
-    <img src="profile.png" alt="Image" class="imgprofile">
-    <div id="overlay" class="overlay"></div>
+    <img src="{% static 'profile.png' %}" alt="Profile Image" class="imgprofile">
+    <div class="overlay" id="overlay" ></div>
 
     <script>
         const overlay = document.getElementById('overlay');
         const shadowsidebar = document.querySelector('.shadowsidebar');
         const toppanel = document.querySelector('.toppanel');
+        const addinventory = document.getElementById('add-inventory');
+        const toProduct = document.getElementById('product');
 
         const toggleOverlay = () => {
             if (overlay.classList.contains('active')) {
                 overlay.classList.remove('active');
-                toppanel.style.left = '-500px';
+                toppanel.style.left = '-300px';
             } else {
                 overlay.classList.add('active');
                 toppanel.style.left = '0';
             }
         };
 
-        shadowsidebar.addEventListener('mouseover', () => {
-            shadowsidebar.style.opacity = 0.1;
-        });
-
-        shadowsidebar.addEventListener('mouseout', () => {
-            shadowsidebar.style.opacity = 0;
+        overlay.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            toppanel.style.left = '-300px';
         });
 
         shadowsidebar.addEventListener('click', toggleOverlay);
 
-        overlay.addEventListener('click', () => {
-            overlay.classList.remove('active');
-            toppanel.style.left = '-500px';
+        addinventory.addEventListener('click', () => {
+            window.location.href = '{% url "main:show_add_inventory" %}';
+        });
+
+        toProduct.addEventListener('click', () => {
+            window.location.href = '{% url "main:show_product" %}';
         });
     </script>
 </body>
 </html>
+{% endblock content %}
