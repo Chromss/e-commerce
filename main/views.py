@@ -15,8 +15,6 @@ def show_add_inventory(request):
             product.variation_count = int(request.POST.get('countVar'))
             product.minimum_price = int(request.POST.get('minPrice'))
             product.save()
-
-            return redirect('main:show_product')
     else:
         product_form = ProductForm()
 

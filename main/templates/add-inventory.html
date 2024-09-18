@@ -399,12 +399,12 @@
             <div class="maintext">Add, Customize Your Item</div>
             <div class="subtext">You can add your collection along with its image, description, price, and variety.</div>
             <div class="context name">Product Name</div>
-            <input class="shortinput productname" name="name" placeholder="Enter your product name">
+            <input class="shortinput productname" name="name" id="namein" placeholder="Enter your product name" required>
             <div class="context desc">Product Description</div>
-            <textarea class="longinput productdesc" name="description" placeholder="Enter your product description"></textarea>
+            <textarea class="longinput productdesc" name="description" id="descin" placeholder="Enter your product description" required></textarea>
             <div class="context image">Product Image</div>
             <div class="imageframe">
-                <input type="file" name="image" id="filein" style="display: none;" accept=".png, .jpg, .jpeg" required>
+                <input type="file" name="image" id="filein" style="display: none;" accept=".png, .jpg, .jpeg">
                 <button class="imagebtn upload" id="upload" type="button">Upload</button>
                 <button class="imagebtn delete" id="delete" type="button">Delete</button>
                 <div class="images-container" id="imagesContainer"></div>
@@ -621,10 +621,17 @@
         });
 
         saveButton.addEventListener('click', (event) => {
-            alert('New inventory has been added!');
-            minPrice = Math.round(minPrice);
-            updateHiddenInputs();
-            window.location.href = '{% url "main:show_main" %}';
+            let name = document.getElementById("namein").value;
+            let description = document.getElementById('descin').value;
+
+            if (!name || !description) {
+                event.preventDefault();
+                alert("Please complete all required fields.");
+            } else {
+                alert('New inventory has been added!');
+                minPrice = Math.round(minPrice);
+                updateHiddenInputs();
+            }
         });
 
         backButton.addEventListener('click', (event) => {
