@@ -423,15 +423,15 @@
             </div>
             <button class="mainbutton save" id="save" type="submit">Save</button>
             <button class="mainbutton back" id="back" type="button">Back</button>
+            <input type="hidden" name="countVar" id="cntVar" value="0">
+            <input type="hidden" name="minPrice" id="minPrc" value="0">
         </div>
-        <input type="hidden" name="countVar" id="countVar" value="0">
-        <input type="hidden" name="averageVal" id="averageVal" value="0">
     </form>
 
     <script>
         let selectedImage = null;
         let countVar = 0;
-        let averageVal = 0;
+        let minPrice = 0;
 
         const uploadButton = document.getElementById('upload');
         const deleteButton = document.getElementById('delete');
@@ -442,7 +442,6 @@
         const imagePreview = document.getElementById('imagePreview');
         const inventoryForm = document.getElementById('inventoryForm');
         const variety = document.getElementById('variety');
-        const varValue = document.getElementById('varvalue')
         
         const varButton = document.querySelector('.varbutton');
         const sifText = document.querySelector('.siftext');
@@ -465,6 +464,11 @@
             updateImageCount();
         }
 
+        function updateHiddenInputs() {
+            document.getElementById('cntVar').value = countVar;
+            document.getElementById('minPrc').value = minPrice;
+        }
+
         function formatPrice(query) {
             const parts = query.split(':');
             const style = parts[0].trim();
@@ -473,10 +477,15 @@
             return `${style}: IDR${formattedPrice}`;
         }
 
-        function updateHiddenInputs() {
-            document.getElementById('countVar').value = countVar;
-            document.getElementById('averageVal').value = averageVal;
-        }
+        variety.addEventListener('click', (event) => {
+            const varAmount = document.getElementById('varvalue').value.trim();
+            if (varAmount) {
+                curPrice = parseInt(varAmount.split(':')[1]);
+                minPrice = countVar == 0 ? curPrice : Math.min(minPrice, curPrice);
+                countVar++;
+                updateHiddenInputs();
+            }
+        });
         
         document.addEventListener('click', function(event) {
             if (selectedImage && !selectedImage.contains(event.target) && !deleteButton.contains(event.target)) {
@@ -602,6 +611,7 @@
                 xFrame.addEventListener('click', function() {
                     varPreview.remove();
                     countVar--;
+                    updateHiddenInputs();
                 });
 
                 varInput.value = '';
@@ -612,21 +622,13 @@
 
         saveButton.addEventListener('click', (event) => {
             alert('New inventory has been added!');
-            averageVal /= 3;
-            averageVal = Math.round(averageVal);
+            minPrice = Math.round(minPrice);
             updateHiddenInputs();
+            window.location.href = '{% url "main:show_main" %}';
         });
 
         backButton.addEventListener('click', (event) => {
             window.location.href = '{% url "main:show_main" %}';
-        });
-
-        variety.addEventListener('click', (event) => {
-            if (varValue.trim() != '') {
-                countVar++;
-                averageVal += parseInt(varValue.value.split(':')[1]);
-                updateHiddenInputs();
-            }
         });
     </script>    
 </body>

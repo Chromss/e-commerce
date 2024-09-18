@@ -136,6 +136,7 @@
             display: inline-block;
             position: absolute;
             overflow-x: auto;
+            overflow-y: hidden;
             scrollbar-width: none;
             scroll-behavior: smooth;
             border-top-left-radius: 12px;
@@ -234,9 +235,7 @@
                 <div class="productframe">
                     <div class="pictframe">
                         {% if product.image %}
-                            <!--
                             <img class="pictpreview" src="{{ product.image.url }}" alt="{{ product.name }}">
-                            -->
                         {% endif %}
                     </div>
                     <div class="textframe">
@@ -244,7 +243,7 @@
                             <div class="pname">{{ product.name }}</div>
                             <div class="pframe">
                                 <div class="pprop">Variations: <span class="bold">{{ product.variation_count }}</span></div>
-                                <div class="pprop">Price: IDR<span class="bold">{{ product.average_price|intcomma }}</span></div>
+                                <div class="pprop">Price: IDR<span class="bold">{{ product.minimum_price|intcomma }}</span></div>
                             </div>
                             <div class="pdesc">{{ product.description }}</div>
                         </div>

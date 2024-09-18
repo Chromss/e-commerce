@@ -10,10 +10,10 @@ def show_add_inventory(request):
         product_form = ProductForm(request.POST, request.FILES)
         if product_form.is_valid():
             product = product_form.save(commit=False)
-            product.variation_count = int(request.POST.get('countVar', 0))
-            product.average_price = int(request.POST.get('averageVal', 0))
-            
+            product.variation_count = int(request.POST.get('countVar'))
+            product.minimum_price = int(request.POST.get('minPrice'))
             product.save()
+
             return redirect('main:show_product')
     else:
         product_form = ProductForm()
