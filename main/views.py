@@ -27,6 +27,12 @@ def show_product(request):
     products = Product.objects.all()
     return render(request, 'product.html', {'products': products})
 
+def show_login(request):
+    return render(request, 'login.html')
+
+def show_signup(request):
+    return render(request, 'signup.html')
+
 def show_xml(request):
     data = Product.objects.all()
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")

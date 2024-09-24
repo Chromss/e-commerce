@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
+    <title>Login | HomifyInc</title>
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Archivo', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .maincontainer {
+            display: inline-block;
+            border-radius: 24px;
+            margin-top: 100px;
+            height: 500px;
+            width: 700px;
+            left: 50%;
+            background-color: #ADD8E6;
+            position: absolute;
+            transform: translateX(-50%);
+        }
+
+        .text {
+            text-wrap: nowrap;
+            position: absolute;
+            letter-spacing: -0.5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .heading {
+            top: 50px;
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .subheading {
+            top: 90px;
+            font-size: 18px;
+        }
+
+        .context {
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.5px;
+            left: 80px;
+            position: absolute;
+        }
+
+        .username {
+            top: 148px;
+        }
+
+        .password {
+            top: 228px;
+        }
+
+        .shortinput {
+            padding: 10px;
+            width: 530px;
+            left: 75px;
+            border: 1px solid #D3D3D3;
+            border-radius: 16px;
+            font-size: 16px;
+            color: #333333;
+            background-color: #F9F9F9;
+            outline: none;
+            position: absolute;
+            transition: all 0.1s ease;
+        }
+
+        .shortinput:focus {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .shortinput::placeholder {
+            color: #999999;
+        }
+
+        .username-input {
+            top: 170px;
+        }
+
+        .password-input {
+            top: 250px;
+            width: 490px;
+        }
+
+        .tosignup-text {
+            position: absolute;
+            font-size: 13px;
+            left: 50%;
+            bottom: 35px;
+            transform: translateX(-50%);
+        }
+
+        .validation {
+            display: none;
+            position: absolute;
+            left: 175px;
+            bottom: 437px;
+            background-color: #E6E6E6;
+            border-radius: 8px;
+            border: 1px solid #B2B2B2;
+            width: 320px;
+            z-index: 1;
+        }
+
+        .validation-frame {
+            margin: 10px;
+            width: 300px;
+            z-index: 1;
+        }
+
+        .validation-text {
+            letter-spacing: -0.5px;
+            font-size: 14px;
+            z-index: 1;
+        }
+
+        .mainbutton {
+            font-family: 'Archivo', sans-serif;
+            position: absolute;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            border-radius: 16px;
+            width: 270px;
+            height: 35px;
+            top: 407px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .mainbutton:hover {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .login {
+            background-color: #FFA500;
+            left: 75px;
+            border: 0px;
+        }
+
+        .login:hover {
+            background-color: #E2980F;
+        }
+
+        .back {
+            background-color: #E6E6E6;
+            right: 75px;
+            border: 2px solid rgba(255, 165, 0, 1);
+        }
+
+        .back:hover {
+            background-color: #D8D8D8;
+        }
+
+        .imgstatus {
+            display: none;
+            position: absolute;
+            cursor: pointer;
+            transform: scale(0.035);
+            transition: transform 0.1s;
+        }
+
+        .img-username {
+            top: -100px;
+            left: -88px;
+        }
+
+        .img-password {
+            top: -20px;
+            left: -41px;
+        }
+
+        .img-visibility-pw {
+            display: block;
+            opacity: 0.3;
+            top: 14px;
+            right: -163px;
+            transform: scale(0.05);
+        }
+
+        .img-visibility-pw:hover {
+            transform: scale(0.053);
+        }
+
+    </style>
+</head>
+<body>
+    <img src="{% static 'mainbg.png' %}" style="opacity: 0.3; filter: grayscale(100%); width: 100%;">
+    <div class="maincontainer">
+        <div class="text heading">Nice to meet you again!</div>
+        <div class="text subheading">Join thousands of satisfied users by logging in to our platform today!</div>
+        <div class="context username">Username</div>
+        <input class="shortinput username-input" id="username" placeholder="e.g. Chroms123">
+        <div class="context password">Password</div>
+        <img class="imgstatus img-visibility-pw" id="visibility-pw" src="{% static 'hide.png' %}"></src>
+        <input class="shortinput password-input" id="password" type="password" placeholder="e.g. chromsTheBest09_">
+        <div class="tosignup-text">Don't have an account yet? Sign up <span style="text-decoration: underline; cursor: pointer" id="tosignup">here.</span></div>
+        <button class="mainbutton login" id="login">Log In</button>
+        <button class="mainbutton back" id="back">Back</button>
+    </div>
+
+    <script>
+        const logIn = document.getElementById('login');
+        const back = document.getElementById('back');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const visibilityPw = document.getElementById('visibility-pw');
+        const toSignUp = document.getElementById('tosignup');
+
+        visibilityPw.addEventListener('click', function() {
+            if (passwordInput.type == 'password') {
+                passwordInput.type = 'text';
+                visibilityPw.src = "{% static 'show.png' %}";
+            } else {
+                passwordInput.type = 'password';
+                visibilityPw.src = "{% static 'hide.png' %}";
+            }
+        });
+
+        toSignUp.addEventListener('click', () => {
+            window.location.href = "{% url 'main:show_signup' %}";
+        });
+
+        logIn.addEventListener('click', () => {
+            window.location.href = "{% url 'main:show_main' %}";
+            //alert("Please fill the entire fields with proper entries to sign up!");
+        });
+        
+        back.addEventListener('click', () => {
+            window.location.href = "{% url 'main:show_main' %}";
+        });
+
+    </script>
+</body>
+</html>

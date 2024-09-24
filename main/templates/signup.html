@@ -1,0 +1,554 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
+    <title>Sign Up | HomifyInc</title>
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Archivo', sans-serif;
+            overflow: hidden;
+        }
+
+        .maincontainer {
+            display: inline-block;
+            border-radius: 24px;
+            margin-top: 50px;
+            height: 600px;
+            width: 700px;
+            left: 50%;
+            background-color: #ADD8E6;
+            position: absolute;
+            transform: translateX(-50%);
+        }
+
+        .text {
+            text-wrap: nowrap;
+            position: absolute;
+            letter-spacing: -0.5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .heading {
+            top: 50px;
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .subheading {
+            top: 90px;
+            font-size: 18px;
+        }
+
+        .context {
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.5px;
+            left: 80px;
+            position: absolute;
+        }
+
+        .fullname {
+            top: 148px;
+        }
+
+        .username {
+            top: 228px;
+        }
+
+        .password {
+            top: 308px;
+        }
+
+        .repeat-password {
+            top: 388px;
+        }
+
+        .shortinput {
+            padding: 10px;
+            width: 530px;
+            left: 75px;
+            border: 1px solid #D3D3D3;
+            border-radius: 16px;
+            font-size: 16px;
+            color: #333333;
+            background-color: #F9F9F9;
+            outline: none;
+            position: absolute;
+            transition: all 0.1s ease;
+        }
+
+        .shortinput:focus {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .shortinput::placeholder {
+            color: #999999;
+        }
+
+        .fullname-input {
+            top: 170px;
+        }
+
+        .username-input {
+            top: 250px;
+        }
+
+        .password-input {
+            top: 330px;
+            width: 490px;
+        }
+
+        .repeat-password-input {
+            top: 410px;
+            width: 490px;
+        }
+
+        .agreement {
+            width: 16px;
+            height: 16px;
+            left: 85px;
+            top: 460px;
+            position: absolute;
+            cursor: pointer;
+        }
+
+        .agreement-text {
+            position: absolute;
+            font-size: 13px;
+            left: 110px;
+            top: 465px;
+        }
+
+        .tologin-text {
+            position: absolute;
+            font-size: 13px;
+            left: 50%;
+            bottom: 35px;
+            transform: translateX(-50%);
+        }
+
+        .validation {
+            display: none;
+            position: absolute;
+            left: 175px;
+            bottom: 437px;
+            background-color: #E6E6E6;
+            border-radius: 8px;
+            border: 1px solid #B2B2B2;
+            width: 320px;
+            z-index: 1;
+        }
+
+        .validation-frame {
+            margin: 10px;
+            width: 300px;
+            z-index: 1;
+        }
+
+        .validation-text {
+            letter-spacing: -0.5px;
+            font-size: 14px;
+            z-index: 1;
+        }
+
+        .mainbutton {
+            font-family: 'Archivo', sans-serif;
+            position: absolute;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            border-radius: 16px;
+            width: 270px;
+            height: 35px;
+            top: 507px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .mainbutton:hover {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .signup {
+            color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(226, 152, 15, 0.6);
+            left: 75px;
+            border: 0px;
+        }
+
+        .signup:hover {
+            background-color: #E2980F;
+        }
+
+        .blocker {
+            position: absolute;
+            display: block;
+            width: 270px;
+            height: 35px;
+            top: 507px;
+            left: 75px;
+            z-index: 1;
+        }
+
+        .back {
+            background-color: #E6E6E6;
+            right: 75px;
+            border: 2px solid rgba(255, 165, 0, 1);
+        }
+
+        .back:hover {
+            background-color: #D8D8D8;
+        }
+
+        .imgstatus {
+            display: none;
+            position: absolute;
+            cursor: pointer;
+            transform: scale(0.035);
+            transition: transform 0.1s;
+        }
+
+        .img-fullname {
+            top: -100px;
+            left: -95px;
+        }
+
+        .img-username {
+            top: -20px;
+            left: -88px;
+        }
+
+        .img-password {
+            top: 60px;
+            left: -41px;
+        }
+
+        .img-repeat-password {
+            top: 140px;
+            left: -38px;
+        }
+
+        .img-visibility-pw {
+            display: block;
+            opacity: 0.3;
+            top: 94px;
+            right: -163px;
+            transform: scale(0.05);
+        }
+
+        .img-visibility-pw:hover {
+            transform: scale(0.053);
+        }
+
+        .img-visibility-rpw {
+            display: block;
+            opacity: 0.3;
+            top: 174px;
+            right: -163px;
+            transform: scale(0.05);
+        }
+
+        .img-visibility-rpw:hover {
+            transform: scale(0.053);
+        }
+
+    </style>
+</head>
+<body>
+    <img src="{% static 'mainbg.png' %}" style="opacity: 0.3; filter: grayscale(100%); width: 100%;">
+    <div class="maincontainer">
+        <div class="validation" id="validate">
+            <div class="validation-frame" id="validate-frame"></div>
+        </div>
+        <div class="text heading">Welcome to HomifyInc!</div>
+        <div class="text subheading">Sign up today for a personalized experience. Register here now!</div>
+        <div class="context fullname">Fullname</div>
+        <img class="imgstatus img-fullname" id="status-img1" src="{% static 'rejected.png' %}"></src>
+        <input class="shortinput fullname-input" id="fullname" placeholder="e.g. Nabil Zahid Rahman">
+        <div class="context username">Username</div>
+        <img class="imgstatus img-username" id="status-img2" src="{% static 'rejected.png' %}"></src>
+        <input class="shortinput username-input" id="username" placeholder="e.g. Chroms123">
+        <div class="context password">Create Password</div>
+        <img class="imgstatus img-password" id="status-img3" src="{% static 'rejected.png' %}"></src>
+        <img class="imgstatus img-visibility-pw" id="visibility-pw" src="{% static 'hide.png' %}"></src>
+        <input class="shortinput password-input" id="password" type="password" placeholder="e.g. chromsTheBest09_">
+        <div class="context repeat-password">Repeat Password</div>
+        <img class="imgstatus img-repeat-password" id="status-img4" src="{% static 'rejected.png' %}"></src>
+        <img class="imgstatus img-visibility-rpw" id="visibility-rpw" src="{% static 'hide.png' %}"></src>
+        <input class="shortinput repeat-password-input" id="repeat-password" type="password" placeholder="e.g. chromsTheBest09_">
+        <input class="agreement" type="checkbox" id="tick"></button>
+        <div class="agreement-text">I have read and agreed to the HomifyInc terms and conditions. <span style="text-decoration: underline; cursor: pointer">More info.</span></div>
+        <div class="blocker" id="block"></div>
+        <div class="tologin-text">Already signed up? Log in instead <span style="text-decoration: underline; cursor: pointer" id="tologin">here.</span></div>
+        <button class="mainbutton signup" id="signup">Finish and Sign Up</button>
+        <button class="mainbutton back" id="back">Back</button>
+    </div>
+
+    <script>
+        let isMouseOver = false;
+
+        const checkbox = document.getElementById('tick');
+        const signUp = document.getElementById('signup');
+        const back = document.getElementById('back');
+        const blocker = document.getElementById('block');
+        const fullnameInput = document.getElementById('fullname');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const repeatPasswordInput = document.getElementById('repeat-password');
+        const statusImg1 = document.getElementById('status-img1');
+        const statusImg2 = document.getElementById('status-img2');
+        const statusImg3 = document.getElementById('status-img3');
+        const statusImg4 = document.getElementById('status-img4');
+        const visibilityPw = document.getElementById('visibility-pw');
+        const visibilityRpw = document.getElementById('visibility-rpw');
+        const validation = document.getElementById('validate');
+        const validationFrame = document.getElementById('validate-frame');
+        const toLogin = document.getElementById('tologin');
+
+        const regex1 = /^[A-Za-z ]+$/;
+        const regex2 = /^[A-Za-z0-9_@-]+$/;
+        const regex34 = /^(?=.*[A-Z])(?=.*\d)(?=.*[_@-])[A-Za-z0-9_@-]+$/;
+        const min1 = 10;
+        const min2 = 8;
+        const min34 = 12;
+
+        function displayStatus(node, img, req) {
+            const value = node.value;
+            img.style.display = 'block';
+            if (value.length == 0) img.style.display = 'none'
+            if (eval(req)) {
+                img.src = "{% static 'accepted.png' %}";
+                img.style.transform = 'scale(0.035)';
+            } else {
+                img.src = "{% static 'rejected.png' %}";
+                img.style.transform = 'scale(0.05)';
+            }
+        }
+
+        function setDisplay(errors, bottom, left) {
+            validation.style.bottom = bottom;
+            validation.style.left = left;
+            validationFrame.innerHTML = '';
+
+            if (errors.length > 0) {
+                validation.style.display = 'block';
+                errors.forEach(message => {
+                    const validationText = document.createElement('div');
+                    validationText.className = 'validation-text';
+                    validationText.textContent = message;
+                    validationFrame.appendChild(validationText);
+                });
+            } else {
+                validation.style.display = 'none';
+            }
+        }
+
+        function unsetDisplay(node) {
+            node.addEventListener('mouseout', () => {
+                isMouseOver = false;
+                validation.style.display = 'none';
+            });
+        }
+
+        fullnameInput.addEventListener('input', function() {
+            const fullnameValue = fullnameInput.value;
+            statusImg1.style.display = 'block';
+
+            if (fullnameValue.length == 0) statusImg1.style.display = 'none';
+            if (regex1.test(fullnameValue) && fullnameValue.length >= min1) {
+                statusImg1.src = "{% static 'accepted.png' %}";
+                statusImg1.style.transform = 'scale(0.035)';
+            } else {
+                statusImg1.src = "{% static 'rejected.png' %}";
+                statusImg1.style.transform = 'scale(0.05)';
+            }
+
+            if (isMouseOver) {
+                let errors = [];
+                if (fullnameValue.length < min1) errors.push("• Minimum 10 characters.");
+                if (!regex1.test(fullnameValue)) errors.push("• Only alphabetic characters and space are allowed.");
+                setDisplay(errors, '437px', '175px');
+            }
+        });
+
+        usernameInput.addEventListener('input', function() {
+            const usernameValue = usernameInput.value;
+            statusImg2.style.display = 'block';
+
+            if (usernameValue.length == 0) statusImg2.style.display = 'none';
+            if (regex2.test(usernameValue) && usernameValue.length >= min2) {
+                statusImg2.src = "{% static 'accepted.png' %}";
+                statusImg2.style.transform = 'scale(0.035)';
+            } else {
+                statusImg2.src = "{% static 'rejected.png' %}";
+                statusImg2.style.transform = 'scale(0.05)';
+            }
+
+            if (isMouseOver) {
+                let errors = [];
+                if (usernameValue.length < min2) errors.push("• Minimum 8 characters."); 
+                if (!/^[A-Za-z0-9_@-]+$/.test(usernameValue)) errors.push("• Only alphabetic, numeric, and symbols -, @, or _ are allowed.");
+                setDisplay(errors, '357px', '182px');
+            }
+        });
+
+        passwordInput.addEventListener('input', function() {
+            const passwordValue = passwordInput.value;
+            statusImg3.style.display = 'block';
+
+            if (passwordValue.length == 0) statusImg3.style.display = 'none';
+            if (regex34.test(passwordValue) && passwordValue.length >= min34) {
+                statusImg3.src = "{% static 'accepted.png' %}";
+                statusImg3.style.transform = 'scale(0.035)';
+            } else {
+                statusImg3.src = "{% static 'rejected.png' %}";
+                statusImg3.style.transform = 'scale(0.05)';
+            }
+
+            if (isMouseOver) {
+                let errors = [];
+                if (passwordValue.length < min34) errors.push("• Minimum 12 characters.");
+                if (!/[A-Z]/.test(passwordValue)) errors.push("• Capital letter is missing.");
+                if (!/\d/.test(passwordValue)) errors.push("• Numeric character is missing.");
+                if (!/[_@-]/.test(passwordValue)) errors.push("• Symbol -, @, _ is missing.");
+                if (!/^[A-Za-z0-9_@-]+$/.test(passwordValue)) errors.push("• Only symbols -, @, or _ are allowed.");
+                setDisplay(errors, '277px', '229px');
+            } else {
+                repeatPasswordInput.dispatchEvent(new Event('input'));
+            }
+        });
+
+        repeatPasswordInput.addEventListener('input', function() {
+            const repeatPasswordValue = repeatPasswordInput.value;
+            statusImg4.style.display = 'block';
+
+            if (repeatPasswordValue.length == 0) statusImg4.style.display = 'none';
+            if (repeatPasswordValue === passwordInput.value && regex34.test(repeatPasswordValue) && repeatPasswordValue.length >= min34) {
+                statusImg4.src = "{% static 'accepted.png' %}";
+                statusImg4.style.transform = 'scale(0.035)';
+            } else {
+                statusImg4.src = "{% static 'rejected.png' %}";
+                statusImg4.style.transform = 'scale(0.05)';
+            }
+
+            if (isMouseOver) {
+                let errors = [];
+                if (repeatPasswordValue != passwordInput.value) errors.push("• Password does not match!")
+                if (statusImg3.src.includes("{% static 'rejected.png' %}")) errors.push("• Created password does not satisfy requirements!")
+                setDisplay(errors, '197px', '232px');
+            } else {
+                PasswordInput.dispatchEvent(new Event('input'));
+            }
+        });
+
+        visibilityPw.addEventListener('click', function() {
+            if (passwordInput.type == 'password') {
+                passwordInput.type = 'text';
+                visibilityPw.src = "{% static 'show.png' %}";
+            } else {
+                passwordInput.type = 'password';
+                visibilityPw.src = "{% static 'hide.png' %}";
+            }
+        });
+
+        visibilityRpw.addEventListener('click', function() {
+            if (repeatPasswordInput.type == 'password') {
+                repeatPasswordInput.type = 'text';
+                visibilityRpw.src = "{% static 'show.png' %}";
+            } else {
+                repeatPasswordInput.type = 'password';
+                visibilityRpw.src = "{% static 'hide.png' %}";
+            }
+        });
+
+        checkbox.addEventListener('click', () => {
+            if (checkbox.checked) {
+                blocker.style.display = 'none';
+                signUp.style.color = 'rgba(0, 0, 0, 1)';
+                signUp.style.backgroundColor = '#FFA500';
+                signUp.style.pointerEvents = 'auto';
+            } else {
+                blocker.style.display = 'block';
+                signUp.style.color = 'rgba(0, 0, 0, 0.4)';
+                signUp.style.backgroundColor = 'rgba(226, 152, 15, 0.6)';
+                signUp.style.pointerEvents = 'none';
+            }
+        });
+
+        statusImg1.addEventListener('mouseover', () => {
+            let errors = [];
+            const fullnameValue = fullnameInput.value;
+            isMouseOver = true;
+
+            if (fullnameValue.length < min1) errors.push("• Minimum 10 characters.");
+            if (!regex1.test(fullnameValue)) errors.push("• Only alphabetic characters and space are allowed.");
+            setDisplay(errors, '437px', '175px');
+        });
+
+        statusImg2.addEventListener('mouseover', () => {
+            let errors = [];
+            const usernameValue = usernameInput.value;
+            isMouseOver = true;
+
+            if (usernameValue.length < min2) errors.push("• Minimum 8 characters."); 
+            if (!/^[A-Za-z0-9_@-]+$/.test(usernameValue)) errors.push("• Only alphabetic, numeric, and symbols -, @, or _ are allowed.");
+            setDisplay(errors, '357px', '182px');
+        });
+
+        statusImg3.addEventListener('mouseover', () => {
+            let errors = [];
+            const passwordValue = passwordInput.value;
+            isMouseOver = true;
+
+            if (passwordValue.length < min34) errors.push("• Minimum 12 characters.");
+            if (!/[A-Z]/.test(passwordValue)) errors.push("• Capital letter is missing.");
+            if (!/\d/.test(passwordValue)) errors.push("• Numeric character is missing.");
+            if (!/[_@-]/.test(passwordValue)) errors.push("• Symbol -, @, _ is missing.");
+            if (!/^[A-Za-z0-9_@-]+$/.test(passwordValue)) errors.push("• Only symbols -, @, and _ are allowed.");
+            setDisplay(errors, '277px', '229px');
+        });
+
+        statusImg4.addEventListener('mouseover', () => {
+            let errors = [];
+            const repeatPasswordValue = repeatPasswordInput.value;
+            isMouseOver = true;
+
+            if (repeatPasswordValue != passwordInput.value) errors.push("• Password does not match!")
+            if (statusImg3.src.includes("{% static 'rejected.png' %}")) errors.push("• Created password does not satisfy requirements!")
+            setDisplay(errors, '197px', '232px');
+        });
+
+        unsetDisplay(statusImg1);
+        unsetDisplay(statusImg2);
+        unsetDisplay(statusImg3);
+        unsetDisplay(statusImg4);
+
+        toLogin.addEventListener('click', () => {
+            window.location.href = "{% url 'main:show_login' %}";
+        });
+
+        signUp.addEventListener('click', () => {
+            if (statusImg1.src.includes("{% static 'accepted.png' %}") && statusImg2.src.includes("{% static 'accepted.png' %}") && statusImg3.src.includes("{% static 'accepted.png' %}") && statusImg4.src.includes("{% static 'accepted.png' %}")) {
+                window.location.href = "{% url 'main:show_main' %}";
+            } else {
+                alert("Please fill the entire fields with proper entries to sign up!");
+            }
+        });
+        
+        back.addEventListener('click', () => {
+            window.location.href = "{% url 'main:show_main' %}";
+        });
+
+    </script>
+</body>
+</html>
