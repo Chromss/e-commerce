@@ -274,24 +274,27 @@
         <div class="text subheading">Sign up today for a personalized experience. Register here now!</div>
         <div class="context fullname">Fullname</div>
         <img class="imgstatus img-fullname" id="status-img1" src="{% static 'rejected.png' %}"></src>
-        <input class="shortinput fullname-input" id="fullname" placeholder="e.g. Nabil Zahid Rahman">
         <div class="context username">Username</div>
         <img class="imgstatus img-username" id="status-img2" src="{% static 'rejected.png' %}"></src>
-        <input class="shortinput username-input" id="username" placeholder="e.g. Chroms123">
         <div class="context password">Create Password</div>
         <img class="imgstatus img-password" id="status-img3" src="{% static 'rejected.png' %}"></src>
         <img class="imgstatus img-visibility-pw" id="visibility-pw" src="{% static 'hide.png' %}"></src>
-        <input class="shortinput password-input" id="password" type="password" placeholder="e.g. chromsTheBest09_">
         <div class="context repeat-password">Repeat Password</div>
         <img class="imgstatus img-repeat-password" id="status-img4" src="{% static 'rejected.png' %}"></src>
         <img class="imgstatus img-visibility-rpw" id="visibility-rpw" src="{% static 'hide.png' %}"></src>
-        <input class="shortinput repeat-password-input" id="repeat-password" type="password" placeholder="e.g. chromsTheBest09_">
         <input class="agreement" type="checkbox" id="tick"></button>
         <div class="agreement-text">I have read and agreed to the HomifyInc terms and conditions. <span style="text-decoration: underline; cursor: pointer">More info.</span></div>
         <div class="blocker" id="block"></div>
         <div class="tologin-text">Already signed up? Log in instead <span style="text-decoration: underline; cursor: pointer" id="tologin">here.</span></div>
-        <button class="mainbutton signup" id="signup">Finish and Sign Up</button>
         <button class="mainbutton back" id="back">Back</button>
+        <form method="POST">
+            {% csrf_token %}
+            <input class="shortinput fullname-input" name="fullname" id="fullname" placeholder="e.g. Nabil Zahid Rahman">
+            <input class="shortinput username-input" name="username" id="username" placeholder="e.g. Chroms123">
+            <input class="shortinput password-input" name="password1" id="password" type="password" placeholder="e.g. chromsTheBest09_">
+            <input class="shortinput repeat-password-input" name="password2" id="repeat-password" type="password" placeholder="e.g. chromsTheBest09_">
+            <button class="mainbutton signup" name="submit" id="signup" type="submit">Finish and Sign Up</button>
+        </form>
     </div>
 
     <script>
@@ -537,18 +540,17 @@
             window.location.href = "{% url 'main:show_login' %}";
         });
 
-        signUp.addEventListener('click', () => {
-            if (statusImg1.src.includes("{% static 'accepted.png' %}") && statusImg2.src.includes("{% static 'accepted.png' %}") && statusImg3.src.includes("{% static 'accepted.png' %}") && statusImg4.src.includes("{% static 'accepted.png' %}")) {
-                window.location.href = "{% url 'main:show_main' %}";
-            } else {
-                alert("Please fill the entire fields with proper entries to sign up!");
-            }
-        });
-        
         back.addEventListener('click', () => {
             window.location.href = "{% url 'main:show_main' %}";
         });
 
+        signUp.addEventListener('click', function() {
+            if (statusImg1.src.includes("{% static 'accepted.png' %}") && statusImg2.src.includes("{% static 'accepted.png' %}") && statusImg3.src.includes("{% static 'accepted.png' %}") && statusImg4.src.includes("{% static 'accepted.png' %}")) {
+                alert("Thanks for registering!");
+            } else {
+                alert("Please fill the entire fields with proper entries to sign up!");
+            }
+        });
     </script>
 </body>
 </html>

@@ -1,11 +1,39 @@
+import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core import serializers
-from main.models import Product
-from main.forms import ProductForm
+from main.models import *
+from main.forms import *
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 def show_main(request):
     return render(request, 'main.html')
+
+def show_signup(request):
+    form = UserForm()
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('main:show_login')
+    context = {'form': form}
+    return render(request, 'signup.html', context)
+
+def show_login(request):
+    form = AuthenticationForm(request)
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('main:show_main')
+    context = {'form': form}
+    return render(request, 'login.html', context)
 
 def show_add_inventory(request):
     if request.method == 'POST':
@@ -22,16 +50,9 @@ def show_add_inventory(request):
         'product_form': product_form,
     })
 
-
 def show_product(request):
     products = Product.objects.all()
     return render(request, 'product.html', {'products': products})
-
-def show_login(request):
-    return render(request, 'login.html')
-
-def show_signup(request):
-    return render(request, 'signup.html')
 
 def show_xml(request):
     data = Product.objects.all()

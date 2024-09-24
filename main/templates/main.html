@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,7 +24,7 @@
         .toppanel {
             width: 320px;
             height: 100vh;
-            z-index: 2;
+            z-index: 3;
             left: -320px;
             background-color: #FFFFFF;
             position: absolute;
@@ -56,30 +57,31 @@
             z-index: 1;
             opacity: 0;
             transition: opacity 0.2s ease;
-            pointer-events: none;
-        }
-
-        .userinfo.show {
-            pointer-events: auto;
         }
 
         .userinfo-frame {
             margin: 10px;
-            z-index: 1;
         }
 
         .userinfo-title {
             font-weight: 600;
             letter-spacing: -0.5px;
             font-size: 16px;
-            z-index: 1;
         }
 
         .userinfo-text {
             margin-top: 2px;
             letter-spacing: -0.5px;
             font-size: 14px;
-            z-index: 1;
+        }
+
+        .userinfo-logout {
+            margin-top: 2px;
+            letter-spacing: -0.5px;
+            font-size: 14px;
+            width: 40px;
+            cursor: pointer;
+            text-decoration: underline;
         }
 
         .mainrectangle {
@@ -99,7 +101,6 @@
             background-color: #616161;
             position: absolute;
             cursor: pointer;
-            
         }
 
         .shadowsidebar {
@@ -239,6 +240,7 @@
             position: fixed;
             pointer-events: none;
             transition: opacity 0.4s;
+            z-index: 2;
         }
 
         .overlay.active {
@@ -256,7 +258,7 @@
     </div>
     <div class="toppanel">
         <div class="textlogo textlogo2">Welcome, Nabil!</div>
-        <div class="textintro">Last Login: 19-20-2024 14:51:32</div>
+        <div class="textintro">Last Login: {{ last_login }}</div>
         <div class="texttoppanel ttp1" id="add-inventory">Add Inventory</div>
         <div class="texttoppanel ttp2">Edit Inventory</div>
     </div>
@@ -268,7 +270,7 @@
     <div class="textframe">
         <div class="textmenu texthome">Home</div>
         <div class="textmenu textproduct" id="product">Product</div>
-        <div class="textmenu textabout">About</div>
+        <div class="textmenu textabout" id="about">About</div>
     </div>
     <div class="textmenu textlogin" id="tologin">Login</div>
     <img src="{% static 'profile.png' %}" class="imgprofile" id="imgprofile">
@@ -276,12 +278,14 @@
         <div class="userinfo-frame" id="userinfo">
             <div class="userinfo-title">Nabil Zahid Rahman</div>
             <div class="userinfo-text">chhromss_</div>
+            <div class="userinfo-logout" id="logout">Logout</div>
         </div>
     </div>
     <div class="overlay" id="overlay" ></div>
 
     <script>
-        let isLoggedIn = false;
+        let isLoggedIn = true;
+        let isVisible = false;
 
         const overlay = document.getElementById('overlay');
         const shadowsidebar = document.querySelector('.shadowsidebar');
@@ -292,6 +296,8 @@
         const userInfo = document.getElementById('userinfo');
         const showUser = document.getElementById('user');
         const imageIcon = document.getElementById('imgprofile');
+        const about = document.getElementById('about');
+        const logout = document.getElementById('logout');
 
         if (!isLoggedIn) {
             toLogin.style.display = 'block';
@@ -309,19 +315,37 @@
 
         imageIcon.addEventListener('mouseover', function() {
             showUser.style.display = 'block';
-            setTimeout(() => {
-                showUser.style.opacity = '1';
-            }, 0);
+            setTimeout(() => {showUser.style.opacity = '1';}, 0);
         });
-
+        
         imageIcon.addEventListener('mouseout', function() {
-            showUser.style.opacity = '0';
-            setTimeout(() => {
-                showUser.style.display = 'none';
-            }, 200);
+            if (!isVisible) {
+                showUser.style.opacity = '0';
+                setTimeout(() => {showUser.style.display = 'none';}, 200);
+            }
         });
 
-        const toggleOverlay = () => {
+        imageIcon.addEventListener('click', function() {
+            if (!isVisible) {
+                isVisible = true;
+                about.style.cursor = 'default';
+            } else {
+                isVisible = false;
+                about.style.cursor = 'pointer';
+            }
+        });
+
+        overlay.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            toppanel.style.left = '-320px';
+        });
+
+        shadowsidebar.addEventListener('click', function() {
+            showUser.style.opacity = '0';
+            setTimeout(() => {showUser.style.display = 'none';}, 200);
+            about.style.cursor = 'pointer';
+            isVisible = false;
+
             if (overlay.classList.contains('active')) {
                 overlay.classList.remove('active');
                 toppanel.style.left = '-320px';
@@ -329,14 +353,7 @@
                 overlay.classList.add('active');
                 toppanel.style.left = '0';
             }
-        };
-
-        overlay.addEventListener('click', () => {
-            overlay.classList.remove('active');
-            toppanel.style.left = '-320px';
         });
-
-        shadowsidebar.addEventListener('click', toggleOverlay);
 
         addinventory.addEventListener('click', () => {
             if (!isLoggedIn) alert("Unable to access this menu due to not logged in.")
@@ -350,6 +367,11 @@
 
         toLogin.addEventListener('click', () => {
             window.location.href = '{% url "main:show_login" %}';
+        });
+
+        logout.addEventListener('click', () => {
+            isLoggedIn = false;
+            //window.location.href = '{% url "main:show_main" %}';
         });
     </script>
 </body>

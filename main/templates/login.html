@@ -205,13 +205,16 @@
         <div class="text heading">Nice to meet you again!</div>
         <div class="text subheading">Join thousands of satisfied users by logging in to our platform today!</div>
         <div class="context username">Username</div>
-        <input class="shortinput username-input" id="username" placeholder="e.g. Chroms123">
         <div class="context password">Password</div>
         <img class="imgstatus img-visibility-pw" id="visibility-pw" src="{% static 'hide.png' %}"></src>
-        <input class="shortinput password-input" id="password" type="password" placeholder="e.g. chromsTheBest09_">
         <div class="tosignup-text">Don't have an account yet? Sign up <span style="text-decoration: underline; cursor: pointer" id="tosignup">here.</span></div>
-        <button class="mainbutton login" id="login">Log In</button>
         <button class="mainbutton back" id="back">Back</button>
+        <form method="POST">
+            {% csrf_token %}
+            <input class="shortinput username-input" id="username" placeholder="e.g. Chroms123">
+            <input class="shortinput password-input" id="password" type="password" placeholder="e.g. chromsTheBest09_">
+            <button class="mainbutton login" id="login" type="submit">Log In</button>
+        </form>
     </div>
 
     <script>
@@ -236,15 +239,13 @@
             window.location.href = "{% url 'main:show_signup' %}";
         });
 
-        logIn.addEventListener('click', () => {
-            window.location.href = "{% url 'main:show_main' %}";
-            //alert("Please fill the entire fields with proper entries to sign up!");
-        });
-        
         back.addEventListener('click', () => {
             window.location.href = "{% url 'main:show_main' %}";
         });
 
+        logIn.addEventListener('click', function() {
+            // TODO
+        });
     </script>
 </body>
 </html>
