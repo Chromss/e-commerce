@@ -257,7 +257,7 @@
         <div class="textcomingsoon">Stay Tune for Full Features!</div>
     </div>
     <div class="toppanel">
-        <div class="textlogo textlogo2">Welcome, Nabil!</div>
+        <div class="textlogo textlogo2">Welcome, {{ user.username }}!</div>
         <div class="textintro">Last Login: {{ last_login }}</div>
         <div class="texttoppanel ttp1" id="add-inventory">Add Inventory</div>
         <div class="texttoppanel ttp2">Edit Inventory</div>
@@ -281,7 +281,7 @@
             <div class="userinfo-logout" id="logout">Logout</div>
         </div>
     </div>
-    <input name="is_logged_in" id="loggedin" value="{{ user.is_authenticated }}">
+    <input type="hidden" name="is_logged_in" id="loggedin" value="{{ user.is_authenticated }}">
     <div class="overlay" id="overlay" ></div>
 
     <script>

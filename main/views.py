@@ -12,7 +12,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 def show_main(request):
-    return render(request, 'main.html')
+    context = {'last_login': request.COOKIES.get('last_login', 'None')}
+    return render(request, 'main.html', context)
 
 def show_signup(request):
     form = UserForm()
@@ -33,14 +34,19 @@ def show_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('main:show_main')
+            response = HttpResponseRedirect(reverse("main:show_main"))
+            response.set_cookie('last_login', str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+            return response
     context = {'form': form}
     return render(request, 'login.html', context)
 
 def do_logout(request):
     logout(request)
-    return redirect('main:show_main')
+    response = HttpResponseRedirect(reverse('main:show_main'))
+    response.delete_cookie('last_login')
+    return response
 
+@login_required(login_url='/login')
 def show_add_inventory(request):
     if request.method == 'POST':
         product_form = ProductForm(request.POST, request.FILES)
@@ -56,9 +62,19 @@ def show_add_inventory(request):
         'product_form': product_form,
     })
 
+@login_required(login_url='/login')
 def show_product(request):
-    products = Product.objects.all()
-    return render(request, 'product.html', {'products': products})
+    form = ProductForm(request.POST or None)
+    
+    if form.is_valid() and request.method == "POST":
+        product = form.save(commit=False)
+        product.user = request.user
+        product.save()
+        return redirect('main:show_main')
+    
+    current_user = Product.objects.filter(user=request.user)
+    context = {'form': form, 'name': request.user.username,'products': Product.objects.all()}
+    return render(request, 'product.html', context)
 
 def show_xml(request):
     data = Product.objects.all()
