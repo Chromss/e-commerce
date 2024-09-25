@@ -40,40 +40,39 @@ Saat pengguna login, Django memverifikasi kredensial mereka dengan melakukan ote
 
 ### Penjelasan Implementasi Kode Pada Tugas 4 ini:
 
-1. Mengimplementasikan fungsi registrasi, login, dan logout.
-
-1) **Membuat fungsi registrasi**
+**1. Mengimplementasikan fungsi registrasi, login, dan logout.**
+1) Membuat fungsi registrasi
 - Aktifkan virtual environment.
 - Tambahkan import ```UserCreationForm``` dan ```messages``` pada ```views.py```.
 - Tambahkan fungsi ```show_signup``` untuk menghasilkan form registrasi dan membuat akun pengguna setelah submit.
 - Buat file HTML baru, ```signup.html```.
 - Tambahkan path URL baru untuk fungsi ```show_signup``` di ```urls.py```.
 
-2) **Membuat fungsi login**
+2) Membuat fungsi login
 - Tambahkan import ```authenticate```, ```login```, dan ```AuthenticationForm``` ke ```views.py```.
 - Buat fungsi ```show_login``` untuk mengautentikasi pengguna.
 - Buat file ```login.html``` pada direktori ```templates```.
 - Tambahkan path URL untuk fungsi ```show_login``` di ```urls.py```.
 
-3) **Membuat fungsi logout**
+3) Membuat fungsi logout
 - Tambahkan import ```logout``` di ```views.py```.
 - Tambahkan fungsi ```do_logout``` untuk menghapus session pengguna dan cookie ```last_login```.
 - Tambahkan path URL untuk fungsi ```do_logout``` di ```urls.py```.
 
-4) **Membatasi akses halaman main**
+4) Membatasi akses halaman main
 - Tambahkan ```@login_required(login_url='/login')``` di atas fungsi ```show_main``` agar hanya pengguna yang login yang bisa mengakses halaman.
 
-2. Membuat dua akun pengguna dengan masing-masing tiga dummy data.
+**2. Membuat dua akun pengguna dengan masing-masing tiga dummy data.**
 - Buat akun pengguna baru dengan username dan password melalui form registrasi di website.
 - Tambahkan 3 dummy data produk melalui halaman "Add New Product" dengan memasukkan ```name```, ```section```, ```price```, dan ```description``` untuk setiap produk.
 
-3. Menghubungkan model ```Product``` dengan ```User```.
+**3. Menghubungkan model ```Product``` dengan ```User```.**
 - Pada ```models.py```, impor ```User``` dan tambahkan variabel ```user``` pada class ```Product```.
 - Di ```views.py```, ubah fungsi ```show_product``` dengan menambahkan ```commit=False``` pada ```product``` dan hubungkan field ```user``` dengan ```request.user```.
 - Ubah context menjadi ```user=request.user``` dan tampilkan ```request.user.username``` di template.
 - Simpan perubahan dan jalankan migrasi model.
 
-4. Menampilkan detail informasi pengguna yang sedang logged in dan menerapkan cookies.
+**4. Menampilkan detail informasi pengguna yang sedang logged in dan menerapkan cookies.**
 - Tambahkan ```HttpResponseRedirect```, ```reverse```, dan ```datetime``` pada ```views.py```.
 - Di fungsi ```show_login```, tambahkan cookie ```last_login``` untuk menyimpan waktu login terakhir pengguna.
 - Tampilkan informasi ```last_login``` pada halaman ```main.html``` melalui context di ```show_main```.
