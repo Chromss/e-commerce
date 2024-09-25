@@ -1,7 +1,8 @@
 import re
 from django.forms import *
 from main.models import Product
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
 class ProductForm(ModelForm):

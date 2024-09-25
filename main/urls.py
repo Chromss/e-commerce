@@ -11,6 +11,7 @@ urlpatterns = [
     path('product/', show_product, name='show_product'),
     path('signup/', show_signup, name='show_signup'),
     path('login/', show_login, name='show_login'),
+    path('logout/', do_logout, name='do_logout'),
     path('xml/', show_xml, name='show_xml'),
     path('json/', show_json, name='show_json'),
     path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'),

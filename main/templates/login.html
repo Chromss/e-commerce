@@ -211,8 +211,8 @@
         <button class="mainbutton back" id="back">Back</button>
         <form method="POST">
             {% csrf_token %}
-            <input class="shortinput username-input" id="username" placeholder="e.g. Chroms123">
-            <input class="shortinput password-input" id="password" type="password" placeholder="e.g. chromsTheBest09_">
+            <input class="shortinput username-input" name="username" id="username" placeholder="e.g. Chroms123">
+            <input class="shortinput password-input" name="password" id="password" type="password" placeholder="e.g. chromsTheBest09_">
             <button class="mainbutton login" id="login" type="submit">Log In</button>
         </form>
     </div>

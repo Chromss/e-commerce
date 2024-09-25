@@ -21,6 +21,8 @@ def show_signup(request):
         if form.is_valid():
             form.save()
             return redirect('main:show_login')
+        else:
+            print(form.errors)
     context = {'form': form}
     return render(request, 'signup.html', context)
 
@@ -34,6 +36,10 @@ def show_login(request):
             return redirect('main:show_main')
     context = {'form': form}
     return render(request, 'login.html', context)
+
+def do_logout(request):
+    logout(request)
+    return redirect('main:show_main')
 
 def show_add_inventory(request):
     if request.method == 'POST':

@@ -276,15 +276,16 @@
     <img src="{% static 'profile.png' %}" class="imgprofile" id="imgprofile">
     <div class="userinfo" id="user">
         <div class="userinfo-frame" id="userinfo">
-            <div class="userinfo-title">Nabil Zahid Rahman</div>
-            <div class="userinfo-text">chhromss_</div>
+            <div class="userinfo-title">{{ user.fullname }}</div>
+            <div class="userinfo-text">{{ user.username }}</div>
             <div class="userinfo-logout" id="logout">Logout</div>
         </div>
     </div>
+    <input name="is_logged_in" id="loggedin" value="{{ user.is_authenticated }}">
     <div class="overlay" id="overlay" ></div>
 
     <script>
-        let isLoggedIn = true;
+        let isLoggedIn = document.getElementById('loggedin').value === 'True';
         let isVisible = false;
 
         const overlay = document.getElementById('overlay');
@@ -370,8 +371,8 @@
         });
 
         logout.addEventListener('click', () => {
-            isLoggedIn = false;
-            //window.location.href = '{% url "main:show_main" %}';
+            document.getElementById('loggedin').value = "False";
+            window.location.href = '{% url "main:do_logout" %}';
         });
     </script>
 </body>
