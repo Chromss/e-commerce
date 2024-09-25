@@ -257,7 +257,7 @@
         <div class="textcomingsoon">Stay Tune for Full Features!</div>
     </div>
     <div class="toppanel">
-        <div class="textlogo textlogo2">Welcome, {{ user.username }}!</div>
+        <div class="textlogo textlogo2">Welcome, {{ user.username|default:"None" }}!</div>
         <div class="textintro">Last Login: {{ last_login }}</div>
         <div class="texttoppanel ttp1" id="add-inventory">Add Inventory</div>
         <div class="texttoppanel ttp2">Edit Inventory</div>
