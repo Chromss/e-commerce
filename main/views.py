@@ -69,6 +69,21 @@ def show_product(request):
     context = {'name': request.user.username, 'products': user_products}
     return render(request, 'product.html', context)
 
+def show_edit_inventory(request, id):
+    product = Product.objects.get(pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+    context = {'form': form, 'product': product}
+    return render(request, "edit_inventory.html", context)
+
+def do_delete_inventory(request, id):
+    product = Product.objects.get(pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
 def show_xml(request):
     data = Product.objects.all()
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")

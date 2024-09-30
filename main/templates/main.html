@@ -375,7 +375,7 @@
         <div class="textlogo textlogo2">Welcome, {{ user.username|default:"None" }}!</div>
         <div class="textintro">Last Login: {{ last_login }}</div>
         <div class="texttoppanel ttp1" id="add-inventory">Add Inventory</div>
-        <div class="texttoppanel ttp2">Edit Inventory</div>
+        <div class="texttoppanel ttp2" id="edit-inventory">Edit Inventory</div>
     </div>
     <div class="navbar">
         <div class="for-mobile">
@@ -423,6 +423,7 @@
         const ssbMobile = document.getElementById('ssbmobile')
         const toppanel = document.querySelector('.toppanel');
         const addinventory = document.getElementById('add-inventory');
+        const editInventory = document.getElementById('edit-inventory');
         const toProduct = document.getElementById('product');
         const toProductM = document.getElementById('productmob');
         const toLogin = document.getElementById('tologin');
@@ -524,6 +525,11 @@
         addinventory.addEventListener('click', () => {
             if (!isLoggedIn) alert("Unable to access this menu due to not logged in.")
             else window.location.href = '{% url "main:show_add_inventory" %}';
+        });
+
+        editInventory.addEventListener('click', function() {
+            if (!isLoggedIn) alert("Unable to access this menu due to not logged in.")
+            else window.location.href = '{% url "main:show_edit_inventory" product.id %}';
         });
 
         toProduct.addEventListener('click', () => {
