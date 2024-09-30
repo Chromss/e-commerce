@@ -48,15 +48,14 @@ def do_logout(request):
 
 @login_required(login_url='/login')
 def show_add_inventory(request):
-    if request.method == 'POST':
-        product_form = ProductForm(request.POST, request.FILES)
-        if product_form.is_valid():
-            product = product_form.save(commit=False)
-            product.user = request.user  # Assign the current user here
-            product.variation_count = int(request.POST.get('countVar'))
-            product.minimum_price = int(request.POST.get('minPrice'))
-            product.save()  # Save the product with the user assigned
-            return redirect('main:show_main')  # Optionally redirect after saving
+    product_form = ProductForm(request.POST, request.FILES)
+    if product_form.is_valid() and request.method == "POST":
+        product = product_form.save(commit=False)
+        product.user = request.user
+        product.variation_count = int(request.POST.get('countVar'))
+        product.minimum_price = int(request.POST.get('minPrice'))
+        product.save()
+        return redirect('main:show_main')
     else:
         product_form = ProductForm()
 
@@ -66,16 +65,8 @@ def show_add_inventory(request):
 
 @login_required(login_url='/login')
 def show_product(request):
-    form = ProductForm(request.POST or None)
-    
-    if form.is_valid() and request.method == "POST":
-        product = form.save(commit=False)
-        product.user = request.user
-        product.save()
-        return redirect('main:show_main')
-    
-    current_user = Product.objects.filter(user=request.user)
-    context = {'form': form, 'name': request.user.username,'products': Product.objects.all()}
+    user_products = Product.objects.filter(user=request.user)
+    context = {'name': request.user.username, 'products': user_products}
     return render(request, 'product.html', context)
 
 def show_xml(request):
