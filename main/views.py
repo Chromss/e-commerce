@@ -52,9 +52,11 @@ def show_add_inventory(request):
         product_form = ProductForm(request.POST, request.FILES)
         if product_form.is_valid():
             product = product_form.save(commit=False)
+            product.user = request.user  # Assign the current user here
             product.variation_count = int(request.POST.get('countVar'))
             product.minimum_price = int(request.POST.get('minPrice'))
-            product.save()
+            product.save()  # Save the product with the user assigned
+            return redirect('main:show_main')  # Optionally redirect after saving
     else:
         product_form = ProductForm()
 
