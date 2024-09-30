@@ -11,6 +11,7 @@
 
     <style>
         body, html {
+            min-width: 320px;
             height: 100%;
             margin: 0;
             font-family: 'Archivo', sans-serif;
@@ -34,18 +35,27 @@
         }
 
         .mainframe {
-            width: 1460px;
+            width: 95%;
             height: 285px;
             top: 370px;
-            left: 50px;
+            left: 3vw;
             position: absolute;
         }
 
         .shadowframe {
-            width: 1418px;
+            width: 93vw;
             height: 255px;
             border: 2px dashed #D3D3D3;
             position: absolute;
+        }
+
+        .shadowpict {
+            position: absolute;
+            scale: 0.2;
+            opacity: 0.3;
+            top: -148px;
+            left: 50%;
+            transform: translateX(-1300px);
         }
 
         .shadowtext {
@@ -53,7 +63,7 @@
             white-space: nowrap;
             opacity: 0.3;
             font-size: 22px;
-            top: 50%;
+            top: 180px;
             left: 50%;
             transform: translateX(-50%) translateY(-50%);
         }
@@ -86,13 +96,12 @@
         }
 
         .mainline {
-            position: absolute;
-            width: 1420px;
+            position: relative;
+            width: 94vw;
             height: 2px;
             top: 350px;
-            left: 50%;
+            left: 38px;
             background-color: #D3D3D3;
-            transform: translateX(-50%);
         }
 
         .maintext {
@@ -102,6 +111,7 @@
             left: 50px;
             top: 300px;
             position: absolute;
+            white-space: nowrap;
         }
 
         .backtext {
@@ -219,12 +229,54 @@
             font-weight: 700;
         }
 
+        @media (max-width: 767.5px) {
+            .maintext {
+                left: 30px;
+                font-size: 18px;
+            }
+
+            .backtext {
+                left: 20px;
+            }
+
+            .mainline {
+                top: 327px;
+                left: 25px;
+                width: 87vw;
+            }
+
+            .mainframe {
+                top: 350px;
+                left: 30px;
+            }
+
+            .productframe {
+                width: 270px;
+                height: 200px;
+                margin-right: 24px;
+                margin-bottom: 24px;
+            }
+
+            .pictframe, .textframe {
+                width: 270px;
+            }
+
+            .subtextframe {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 619.5px) {
+            .mainframe {
+                width: 85vw;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="topframe"></div>
     <div class="searchframe">
-        <input class="searchbar" placeholder="Explore anything you want">
+        <input class="searchbar" id="searchbar" placeholder="Explore anything you want">
         <div class="backtext" id="back">Back</div>
     </div>
     <div class="maintext">Our Top Products For {{ user.username }}</div>
@@ -252,13 +304,28 @@
             {% endfor %}
         {% else %}
             <div class="shadowframe">
-                <div class="shadowtext">No added product</div>
+                <div class="shadowpict"><img src="{% static 'sad-person.png' %}"></div>
+                <div class="shadowtext">No products yet...</div>
             </div>
         {% endif %}
     </div>    
 
     <script>
         const backButton = document.getElementById('back');
+        const searchBar = document.getElementById('searchbar');
+
+        function updateSearchBar() {
+            const width = window.innerWidth;
+            if (width < 700) {
+                const sbAfter = 500 - (700 - width);
+                searchBar.style.width = sbAfter + 'px';
+            } else {
+                searchBar.style.width = '500px';
+            }
+        }
+
+        window.addEventListener('resize', updateSearchBar);
+        document.addEventListener('DOMContentLoaded', updateSearchBar);
 
         backButton.addEventListener('click', () => {
             window.location.href = '{% url "main:show_main" %}';

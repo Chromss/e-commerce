@@ -21,6 +21,12 @@
             overflow-y: auto;
         }
 
+        .navbar {
+            position: fixed;
+            width: 100vw;
+            height: 75px;
+        }
+
         .toppanel {
             width: 320px;
             height: 100vh;
@@ -33,24 +39,24 @@
         }
 
         .imgprofile {
+            margin-left: 80px;
+            position: relative;
             display: none;
-            position: absolute;
-            top: -215px;
-            right: -175px;
             cursor: pointer;
-            transform: scale(0.09);
+            transform: scale(2.5);
             transition: transform 0.2s;
+            top: -10px;
         }
 
         .imgprofile:hover {
-            transform: scale(0.1);
+            transform: scale(2.7);
         }
 
         .userinfo {
             display: none;
             position: absolute;
-            right: 115px;
-            top: 30px;
+            right: calc(105px);
+            top: 20px;
             background-color: #E6E6E6;
             border-radius: 8px;
             border: 1px solid #B2B2B2;
@@ -100,12 +106,11 @@
             opacity: 0.4;
             background-color: #616161;
             position: absolute;
-            cursor: pointer;
         }
 
         .shadowsidebar {
             background-color: #616161;
-            position: absolute;
+            position: relative;
             cursor: pointer;
             width: 34px;
             height: 34px;
@@ -136,11 +141,11 @@
         .textlogo {
             font-size: 30px;
             font-weight: 700;
-            font-style: normal;
             letter-spacing: -1px;
-            position: absolute;
             top: 30px;
-            width: 100%;
+            font-style: normal;
+            white-space: nowrap;
+            position: absolute;
         }
 
         .textlogo1 {
@@ -160,11 +165,11 @@
             left: 20px;
         }
 
-        .textframe {
+        .navbarframe {
             display: flex;
             position: absolute;
             top: 40px;
-            left: 1010px;
+            right: calc(60px);
             height: 20px;
         }
 
@@ -188,12 +193,11 @@
         .textlogin {
             display: block;
             text-decoration: underline;
-            position: absolute;
-            right: 60px;
-            top: 38px;
+            position: relative;    
         }
 
         .textcomingsoon {
+            text-wrap: nowrap;
             font-style: normal;
             position: absolute;
             cursor: pointer;
@@ -247,6 +251,117 @@
             opacity: 1;
             pointer-events: auto;
         }
+
+        @media (max-width: 767.5px) {
+            .texthome, .textproduct, .textabout {
+                display: none;
+            }
+
+            .navbarframe {
+                right: 100px;
+            }
+
+            .userinfo {
+                right: 145px;
+            }
+
+            .for-mobile {
+                position: absolute;
+                width: 34px;
+                height: 34px;
+                right: 25px;
+            }
+
+            .sidebar-mobile {
+                width: 23px;
+                height: 4px;
+                border-radius: 4px;
+                opacity: 0.4;
+                background-color: #616161;
+                position: absolute;
+            }
+
+            .shadowsidebar-mobile {
+                background-color: #616161;
+                position: relative;
+                cursor: pointer;
+                width: 34px;
+                height: 34px;
+                border-radius: 4px;
+                top: 30px;
+                right: 6px;
+                opacity: 0;
+                z-index: 1;
+                transition: opacity 0.3s;
+            }
+
+            .shadowsidebar-mobile:hover {
+                opacity: 0.1;
+            }
+
+            .rectangle1-mobile {
+                top: 37px;
+            }
+
+            .rectangle2-mobile {
+                top: 45px;
+            }
+
+            .rectangle3-mobile {
+                top: 53px;
+            }
+
+            .showmenu {
+                display: none;
+                background-color: #FAFAFA;
+                position: absolute;
+                opacity: 0.7;
+                border-radius: 8px;
+                width: 120px;
+                height: 90px;
+                top: 70px;
+                right: 5px;
+            }
+
+            .textmenu-mobile {
+                text-decoration: underline;
+                font-size: 16px;
+                margin-bottom: 8px;
+                font-weight: 600;
+                letter-spacing: -0.5px;
+                top: 10px;
+                left: 15px;
+                cursor: pointer;
+                position: relative;
+                transition: color 0.15s;
+            }
+        }
+
+        @media (max-width: 379.5px) {
+            .navbarframe {
+                right: 70px;
+            }
+
+            .shadowsidebar-mobile {
+                right: -10px;
+            }
+
+            .sidebar-mobile {
+                right: -5px;
+            }
+
+            .textlogo {
+                left: 20px;
+            }
+
+            .sidebar {
+                left: 15px;
+            }
+
+            .shadowsidebar {
+                left: 10px;
+            }
+        }
     </style>
 </head>
 {% endblock head %}
@@ -262,18 +377,31 @@
         <div class="texttoppanel ttp1" id="add-inventory">Add Inventory</div>
         <div class="texttoppanel ttp2">Edit Inventory</div>
     </div>
-    <div class="shadowsidebar"></div>
-    <div class="sidebar rectangle1"></div>
-    <div class="sidebar rectangle2"></div>
-    <div class="sidebar rectangle3"></div>
-    <div class="textlogo textlogo1">HomifyInc</div>
-    <div class="textframe">
-        <div class="textmenu texthome">Home</div>
-        <div class="textmenu textproduct" id="product">Product</div>
-        <div class="textmenu textabout" id="about">About</div>
+    <div class="navbar">
+        <div class="for-mobile">
+            <div class="showmenu">
+                <div class="textmenu-mobile">Home</div>
+                <div class="textmenu-mobile" id="productmob">Product</div>
+                <div class="textmenu-mobile" id="about">About</div>
+            </div>
+            <div class="shadowsidebar-mobile" id="ssbmobile"></div>
+            <div class="sidebar-mobile rectangle1-mobile"></div>
+            <div class="sidebar-mobile rectangle2-mobile"></div>
+            <div class="sidebar-mobile rectangle3-mobile"></div>
+        </div>
+        <div class="shadowsidebar"></div>
+        <div class="sidebar rectangle1"></div>
+        <div class="sidebar rectangle2"></div>
+        <div class="sidebar rectangle3"></div>
+        <div class="textlogo textlogo1">HomifyInc</div>
+        <div class="navbarframe">
+            <div class="textmenu texthome">Home</div>
+            <div class="textmenu textproduct" id="product">Product</div>
+            <div class="textmenu textabout" id="about">About</div>
+            <div class="textmenu textlogin" id="tologin">Login</div>
+            <img src="{% static 'profile.png' %}" class="imgprofile" id="imgprofile">
+        </div>
     </div>
-    <div class="textmenu textlogin" id="tologin">Login</div>
-    <img src="{% static 'profile.png' %}" class="imgprofile" id="imgprofile">
     <div class="userinfo" id="user">
         <div class="userinfo-frame" id="userinfo">
             <!-- <div class="userinfo-title">{{ user.fullname }}</div> -->
@@ -287,18 +415,33 @@
     <script>
         let isLoggedIn = document.getElementById('loggedin').value === 'True';
         let isVisible = false;
+        let isMenuVis = false;
 
         const overlay = document.getElementById('overlay');
         const shadowsidebar = document.querySelector('.shadowsidebar');
+        const showMenu = document.querySelector('.showmenu');
+        const ssbMobile = document.getElementById('ssbmobile')
         const toppanel = document.querySelector('.toppanel');
         const addinventory = document.getElementById('add-inventory');
         const toProduct = document.getElementById('product');
+        const toProductM = document.getElementById('productmob');
         const toLogin = document.getElementById('tologin');
         const userInfo = document.getElementById('userinfo');
         const showUser = document.getElementById('user');
         const imageIcon = document.getElementById('imgprofile');
         const about = document.getElementById('about');
         const logout = document.getElementById('logout');
+
+        function checkViewport() {
+            if (window.innerWidth < 768) {
+                document.querySelector('.for-mobile').style.display = 'block';
+            } else {
+                document.querySelector('.for-mobile').style.display = 'none';
+            }
+        }
+
+        checkViewport();
+        window.addEventListener('resize', checkViewport);
 
         if (!isLoggedIn) {
             toLogin.style.display = 'block';
@@ -313,6 +456,28 @@
             if (idx === -1) return input;
             return input.substring(0, idx);
         }
+
+        showMenu.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        ssbMobile.addEventListener('click', function(event) {
+            if (!isMenuVis) {
+                isMenuVis = true;
+                showMenu.style.display = 'block';
+            } else {
+                isMenuVis = false;
+                showMenu.style.display = 'none';
+            }
+            event.stopPropagation();
+        });
+
+        document.addEventListener('click', function() {
+            if (isMenuVis) {
+                isMenuVis = false;
+                showMenu.style.display = 'none';
+            }
+        });
 
         imageIcon.addEventListener('mouseover', function() {
             showUser.style.display = 'block';
@@ -362,6 +527,11 @@
         });
 
         toProduct.addEventListener('click', () => {
+            if (!isLoggedIn) alert("Unable to access this menu due to not logged in.")
+            else window.location.href = '{% url "main:show_product" %}';
+        });
+
+        toProductM.addEventListener('click', () => {
             if (!isLoggedIn) alert("Unable to access this menu due to not logged in.")
             else window.location.href = '{% url "main:show_product" %}';
         });
