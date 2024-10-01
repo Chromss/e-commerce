@@ -391,7 +391,7 @@
         pEdits.forEach(pEdit => {
             pEdit.addEventListener('click', function() {
                 const productId = this.getAttribute('data-id');
-                window.location.href = "{% url 'main:show_edit_inventory' product.pk %}";
+                window.location.href = "{% url 'main:edit_inventory' product.pk %}";
             });
         });
 

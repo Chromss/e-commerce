@@ -69,7 +69,7 @@ def show_product(request):
     context = {'name': request.user.username, 'products': user_products}
     return render(request, 'product.html', context)
 
-def show_edit_inventory(request, id):
+def edit_inventory(request, id):
     product = Product.objects.get(pk=id)
     form = ProductForm(request.POST or None, instance=product)
 
@@ -79,7 +79,7 @@ def show_edit_inventory(request, id):
     context = {'form': form}
     return render(request, "edit_inventory.html", context)
 
-def do_delete_inventory(request, id):
+def delete_inventory(request, id):
     product = Product.objects.get(pk=id)
     product.delete()
     return HttpResponseRedirect(reverse('main:show_product'))
