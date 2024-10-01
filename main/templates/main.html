@@ -527,10 +527,10 @@
             else window.location.href = '{% url "main:show_add_inventory" %}';
         });
 
-        editInventory.addEventListener('click', function() {
-            if (!isLoggedIn) alert("Unable to access this menu due to not logged in.")
-            else window.location.href = '{% url "main:show_edit_inventory" product.id %}';
-        });
+        // editInventory.addEventListener('click', function() {
+        //     if (!isLoggedIn) alert("Unable to access this menu due to not logged in.")
+        //     
+        // });
 
         toProduct.addEventListener('click', () => {
             if (!isLoggedIn) alert("Unable to access this menu due to not logged in.")

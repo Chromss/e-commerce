@@ -75,14 +75,14 @@ def show_edit_inventory(request, id):
 
     if form.is_valid() and request.method == "POST":
         form.save()
-        return HttpResponseRedirect(reverse('main:show_main'))
-    context = {'form': form, 'product': product}
+        return HttpResponseRedirect(reverse('main:show_product'))
+    context = {'form': form}
     return render(request, "edit_inventory.html", context)
 
 def do_delete_inventory(request, id):
     product = Product.objects.get(pk=id)
     product.delete()
-    return HttpResponseRedirect(reverse('main:show_main'))
+    return HttpResponseRedirect(reverse('main:show_product'))
 
 def show_xml(request):
     data = Product.objects.all()
