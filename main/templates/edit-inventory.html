@@ -9,12 +9,238 @@
     <title>Edit Inventory | HomifyInc</title>
 
     <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Archivo', sans-serif;
+            overflow: hidden;
+        }
 
-   </style>
+        .maincontainer {
+            display: inline-block;
+            border-radius: 24px;
+            margin-top: 20px;
+            height: 660px;
+            width: 700px;
+            left: 50%;
+            background-color: #ADD8E6;
+            position: absolute;
+            transform: translateX(-50%);
+        }
+
+        .text {
+            text-wrap: nowrap;
+            position: absolute;
+            letter-spacing: -0.5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .heading {
+            top: 50px;
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .subheading {
+            top: 90px;
+            font-size: 16px;
+        }
+
+        .context {
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.5px;
+            left: 60px;
+            position: absolute;
+        }
+
+        .pname {
+            top: 148px;
+        }
+
+        .pdesc {
+            top: 228px;
+        }
+
+        .pvarcnt {
+            top: 408px;
+        }
+
+        .pprice {
+            top: 488px;
+        }
+
+        .shortinput {
+            padding: 10px;
+            width: 360px;
+            left: 50px;
+            border: 1px solid #D3D3D3;
+            border-radius: 16px;
+            font-size: 16px;
+            color: #333333;
+            background-color: #F9F9F9;
+            outline: none;
+            position: absolute;
+            transition: all 0.1s ease;
+        }
+
+        .shortinput:focus {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .shortinput::placeholder {
+            color: #999999;
+        }
+
+        .pname-input {
+            top: 170px;
+        }
+
+        .pvarcnt-input {
+            top: 430px;
+            width: 575px;
+        }
+
+        .pprice-input {
+            top: 510px;
+            width: 575px;
+        }
+
+        .pdesc-input {
+            font-family: 'Archivo', sans-serif;
+            padding: 8px;
+            left: 50px;
+            top: 250px;
+            width: 360px;
+            height: 120px;
+            font-size: 16px;
+            scrollbar-width: none;
+            border: 1px solid #D3D3D3;
+            border-radius: 16px;
+            color: #333333;
+            background-color: #F9F9F9;
+            outline: none;
+            resize: none;
+            position: absolute;
+            transition: all 0.1s ease;
+        }
+
+        .pdesc-input:focus {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .pdesc-input::placeholder {
+            color: #999999;
+        }
+
+        .imagepreview {
+            right: 50px;
+            top: 170px;
+            width: 180px;
+            height: 180px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            object-fit: cover;
+            border: 2px solid #999999;
+            position: absolute; 
+        }
+
+        .imgtextframe {
+            position: absolute;
+            width: 180px;
+            height: 25px;
+            right: 60px;
+            top: 360px;
+        }
+
+        .imgtext {
+            position: absolute;
+            text-align: center;
+            font-style: italic;
+            width: 180px;
+            font-size: 13px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .mainbutton {
+            font-family: 'Archivo', sans-serif;
+            position: absolute;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            border-radius: 16px;
+            width: 270px;
+            height: 35px;
+            bottom: 40px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .mainbutton:hover {
+            border-color: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+        }
+
+        .save {
+            background-color: #FFA500;
+            left: 75px;
+            border: 0px;
+        }
+
+        .save:hover {
+            background-color: #E2980F;
+        }
+
+        .back {
+            background-color: #E6E6E6;
+            right: 75px;
+            border: 2px solid rgba(255, 165, 0, 1);
+        }
+
+        .back:hover {
+            background-color: #D8D8D8;
+        }
+    
+    </style>
 </head>
 <body>
+    <img src="{% static 'mainbg.png' %}" style="opacity: 0.3; filter: grayscale(100%); width: 100%;">
+    <div class="maincontainer">
+        <div class="text heading">Edit Your Item: {{ product.name }}</div>
+        <div class="text subheading">You can edit your collection along with its image, description, price, and variety count.</div>
+        <div class="context pname">Product Name</div>
+        <div class="context pdesc">Product Description</div>
+        <div class="context pvarcnt">Product Variation</div>
+        <div class="context pprice">Product Price</div>
+        <div class="imgtextframe">
+            <div class="imgtext">Preview for {{ product.name }}</div>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <input class="shortinput pname-input" name="name" placeholder="{{ product.name }}">
+            <textarea class="pdesc-input" name="description" placeholder="{{ product.description }}"></textarea>
+            <input class="shortinput pvarcnt-input" name="variation_count" placeholder="{{ product.variation_count }}">
+            <input class="shortinput pprice-input" name="minimum_price" placeholder="{{ product.minimum_price }}">
+            <button class="mainbutton save" type="submit" id="save">Save</button>
+        </form>
+        <img class="imagepreview" src="{{ product.image.url }}">
+        <button class="mainbutton back" id="back">Back</button>
+    </div>
     <script>
+        const saveButton = document.getElementById('save');
+        const backButton = document.getElementById('back');
 
-    </script>
+        saveButton.addEventListener('click', () => {
+            alert("The product has successfully been edited!");
+        });
+
+        backButton.addEventListener('click', () => {
+            window.location.href = "{% url 'main:show_product' %}";
+        });
+    </script>    
 </body>
 </html>

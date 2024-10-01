@@ -76,7 +76,7 @@ def edit_inventory(request, id):
     if form.is_valid() and request.method == "POST":
         form.save()
         return HttpResponseRedirect(reverse('main:show_product'))
-    context = {'form': form}
+    context = {'form': form, 'product': product}
     return render(request, "edit-inventory.html", context)
 
 def delete_inventory(request, id):

@@ -235,6 +235,7 @@
             width: 50px;
             height: 0px;
             transition: height 0.3s ease;
+            z-index: 1;
         }
 
         .pinfo {
@@ -338,8 +339,8 @@
                 <div class="productframe">
                     <img class="pinfo" id="pinfo" src="{% static 'info-button.png' %}">
                     <div class="ptool" id="ptool">
-                        <img class="pedit" src="{% static 'edit.png' %}">
-                        <img class="pdelete" src="{% static 'delete.png' %}">
+                        <img class="pedit" src="{% static 'edit.png' %}" product-id="{{ product.id }}">
+                        <img class="pdelete" src="{% static 'delete.png' %}" product-id="{{ product.id }}">
                     </div>
                     <div class="pictframe">
                         {% if product.image %}
@@ -374,6 +375,7 @@
         const pInfos = document.querySelectorAll('.pinfo');
         const pTools = document.querySelectorAll('.ptool');
         const pEdits = document.querySelectorAll('.pedit');
+        const pDeletes = document.querySelectorAll('.pdelete');
 
         function updateSearchBar() {
             const width = window.innerWidth;
@@ -388,12 +390,6 @@
         window.addEventListener('resize', updateSearchBar);
         document.addEventListener('DOMContentLoaded', updateSearchBar);
 
-        pEdits.forEach(pEdit => {
-            pEdit.addEventListener('click', function() {
-                window.location.href = "{% url 'main:edit_inventory' product.pk %}";
-            });
-        });
-
         pInfos.forEach((pInfo, index) => {
             const pTool = pTools[index];
             pInfo.addEventListener('click', function() {
@@ -404,6 +400,21 @@
                 }
             });
         });
+
+        pEdits.forEach(pEdit => {
+            pEdit.addEventListener('click', function() {
+                const productId = pEdit.getAttribute('product-id');
+                window.location.href = `/edit-inventory/${productId}`;
+            });
+        });
+
+        pDeletes.forEach(pDelete => {
+            pDelete.addEventListener('click', function() {
+                const productId = pDelete.getAttribute('product-id');
+                alert("Selected product has successfully been deleted!")
+                window.location.href = `/delete-inventory/${productId}`;
+            });
+        });
 
         backButton.addEventListener('click', () => {
             window.location.href = '{% url "main:show_main" %}';
