@@ -77,7 +77,7 @@ def edit_inventory(request, id):
         form.save()
         return HttpResponseRedirect(reverse('main:show_product'))
     context = {'form': form}
-    return render(request, "edit_inventory.html", context)
+    return render(request, "edit-inventory.html", context)
 
 def delete_inventory(request, id):
     product = Product.objects.get(pk=id)
