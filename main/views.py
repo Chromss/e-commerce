@@ -22,8 +22,6 @@ def show_signup(request):
         if form.is_valid():
             form.save()
             return redirect('main:show_login')
-        else:
-            print(form.errors)
     context = {'form': form}
     return render(request, 'signup.html', context)
 
