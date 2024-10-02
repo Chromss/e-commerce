@@ -4,77 +4,40 @@
 - Repository: https://github.com/Chromss/e-commerce
 - PWS: http://pbp.cs.ui.ac.id/nabil.zahid/homifyinc
 
-# Tugas 4 Checkpoint
+# Tugas 5 Checkpoint
 
-### Langkah-langkah dalam mengimplementasikan checklist pada tugas:
-1. Membuat sebuah class ProductForm yang terdiri atas 5 atribut, yakni karakter dari setiap objek produk yang akan dibuat (mencakup nama, deskripsi, gambar dari produk, variasi produk, dan harga produk yang menampilkan harga terendah dari variasi yang ada).
-2. Mendefinisikan fungsi ```show_xml```, ```show_json```, ```show_xml_by_id```, ```show_json_by_id```, yakni fungsi yang akan memuat informasi dari setiap objek ```Product``` dalam susunan yang lebih easy-access dan versatile.
-3. Menambahkan path-path dari fungsi pada nomor (2) untuk dapat diakses dari server yang dijalankan.
+### 1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
 
-### 1. Apa perbedaan antara ```HttpResponseRedirect()``` dan ```redirect()```?  
+Dalam CSS, jika sebuah elemen memiliki beberapa selector yang diterapkan secara bersamaan, maka urutan prioritas akan mengikuti tingkat spesifisitas masing-masing selector. Urutan tertinggi dimiliki oleh `inline styles`, yaitu gaya yang diterapkan langsung di atribut `style` pada elemen HTML, seperti `<div style="color: red;">`. Setelah itu, prioritas berikutnya adalah `ID selectors` yang ditandai dengan `#` diikuti nama ID, seperti `#navbar`. Selector ini memiliki kekuatan lebih dibandingkan `class selector.`
 
-```HttpResponseRedirect()``` adalah kelas bawaan Django yang digunakan untuk melakukan pengalihan (redirect) pengguna ke URL lain. Saat menggunakan ini, kita harus secara eksplisit menuliskan URL tujuan dalam bentuk string. Di sisi lain, ```redirect()``` adalah shortcut yang lebih fleksibel di Django. Selain menerima string URL, ia juga bisa menerima nama view atau bahkan objek model, dan Django akan secara otomatis mengonversinya menjadi URL yang sesuai.  
+Selanjutnya, `class selectors, attribute selectors,` dan `pseudo-classes` berada dalam satu tingkatan prioritas, contohnya `.navbar`, `[type="password"]`, atau `:hover`. Urutan terakhir adalah `element selectors` seperti `h1`, serta `pseudo-elements` seperti `::before` dan `::after`. Pada proyek berbasis Django, `inline styles` biasanya tidak digunakan, dan gaya lebih sering diterapkan melalui file CSS terpisah, sehingga `ID selectors, class selectors,` dan `element selectors` lebih umum dijumpai.  
 
-### 2. Jelaskan cara kerja penghubungan model ```Product``` dengan ```User```!  
+### 2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!  
 
-Penghubungan model ```Product``` dengan ```User``` dapat dilakukan dengan menggunakan field ```ForeignKey``` atau ```ManyToManyField```, tergantung kebutuhan. Jika satu pengguna hanya bisa memiliki satu produk atau sekelompok produk tertentu, maka kita menggunakan ```ForeignKey```, yang berarti setiap produk terhubung ke satu pengguna. Namun, jika satu produk bisa dimiliki oleh banyak pengguna dan sebaliknya, maka kita menggunakan ```ManyToManyField```, yang memungkinkan hubungan dua arah antara produk dan pengguna.  
+Responsive design adalah konsep yang penting dalam pengembangan web modern karena memungkinkan tampilan web beradaptasi dengan berbagai perangkat, baik dari segi ukuran layar maupun resolusi. Hal ini menjadi sangat relevan mengingat perangkat yang digunakan pengguna sangat beragam, mulai dari laptop hingga smartphone.
 
-### 3. Apa perbedaan antara authentication dan authorization, dan apa yang terjadi saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.
+Dengan menggunakan responsive design, web akan tampil lebih rapi dan sesuai dengan desain yang diinginkan di semua perangkat. Sebagai contoh, website seperti Twitter dan Google sudah menerapkan responsive design dengan baik, sehingga tampilannya tetap konsisten di berbagai perangkat. Di sisi lain, beberapa website lama atau web bisnis kecil lokal sering kali tidak memiliki desain yang responsif, sehingga tampilannya tidak optimal saat diakses dari perangkat selain desktop.
 
-1. **Authentication** adalah proses verifikasi identitas pengguna, yaitu memastikan bahwa mereka adalah orang yang mereka klaim dengan memeriksa kredensial seperti username dan password. Di Django, proses ini dilakukan ketika pengguna mencoba login dengan kredensial yang benar.
-   
-2. **Authorization** adalah proses pemeriksaan hak akses pengguna terhadap sumber daya atau tindakan tertentu setelah mereka berhasil diotentikasi. Ini menentukan apakah pengguna memiliki izin yang diperlukan untuk mengakses suatu halaman atau fitur.
+### 3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
 
-Saat pengguna login, Django memverifikasi kredensial mereka dengan melakukan otentikasi username dan password. Jika berhasil, Django akan membuat sesi (session) untuk pengguna tersebut, yang menyimpan informasi mereka seperti ID pengguna di database.
+`Margin, border`, dan `padding` merupakan bagian dari `CSS box model` yang digunakan untuk mengatur jarak dan tata letak elemen. `Margin` adalah jarak antara elemen dengan elemen lainnya di luar `border`, misalnya `margin: 16px;` akan menambahkan jarak di semua sisi elemen. `Border` adalah garis yang mengelilingi elemen, misalnya `border: 3px solid black;` akan memberikan garis hitam tebal 3px di sekitar elemen. Sementara itu, `padding` adalah jarak antara konten elemen dengan border elemen tersebut, contohnya `padding: 6px;` akan memberikan jarak 6px di semua sisi konten elemen tersebut. Pengaturan `margin, border`, dan `padding` dapat digunakan bersama-sama untuk menciptakan tata letak yang sesuai dengan kebutuhan tampilan halaman web.
 
-### 4. Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?
+### 4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
 
-1. Django menggunakan kombinasi sesi (session) dan cookies untuk mengingat pengguna yang sudah login. Setelah pengguna berhasil login, Django membuat session untuk mereka, dan session ID disimpan di dalam cookie pengguna. Pada setiap permintaan berikutnya, session ID ini akan dibawa oleh cookie, sehingga Django dapat mengenali pengguna.
+`Flexbox` dan `Grid Layout` adalah dua teknik tata letak modern dalam CSS yang sering digunakan untuk membuat desain halaman web yang fleksibel dan responsif. `Flexbox` berfokus pada pengaturan elemen dalam satu baris atau kolom, serta mendistribusikan ruang antar-elemen secara merata menggunakan properti seperti `space-between` dan `space-around`. `Flexbox` sangat cocok untuk menyusun elemen-elemen dalam satu dimensi (horizontal atau vertikal). Di sisi lain, `Grid Layout` memungkinkan pengaturan elemen dalam dua dimensi, yaitu baris dan kolom. Properti seperti `grid-template-columns` dan `grid-template-rows` memungkinkan pengaturan elemen dengan lebih spesifik, sehingga tata letak yang lebih kompleks dapat dibuat dengan mudah.
 
-2. Selain untuk mengingat pengguna login, cookies juga digunakan untuk menyimpan preferensi pengguna, melacak aktivitas, atau menyimpan data sesi lainnya yang terkait dengan aplikasi web.
+### Penjelasan Implementasi Kode Pada Tugas 5 ini:
 
-3. Tidak semua cookies aman secara default. Ada beberapa risiko keamanan seperti **session hijacking** (pencurian sesi) atau **cross-site scripting (XSS)**. Namun, Django menyediakan beberapa fitur keamanan untuk cookies, seperti:
-   - ```HttpOnly```: Membuat cookie hanya bisa diakses melalui HTTP(S) dan tidak dapat dibaca oleh JavaScript.
-   - ```Secure```: Mengharuskan cookie hanya dikirim melalui koneksi HTTPS yang aman.
-   - ```SameSite```: Membatasi pengiriman cookie pada permintaan lintas situs (cross-site request), mencegah serangan CSRF.
+**A. Menambahkan fitur pengubahan dan penghapusan produk**
+1. Buat fungsi `edit_product` pada file `views.py` untuk menangani pengeditan data produk. Gunakan `Product.objects.get(pk=id)` untuk mengambil data produk sesuai dengan `id` dari database. Formulir pengeditan kemudian diisi dengan data produk tersebut. Setelah perubahan dilakukan, simpan dengan metode `POST` untuk menyimpan data yang telah diedit.
+2. Buat file HTML baru bernama `edit_product.html` yang berisi form untuk mengedit produk. Tambahkan URL yang terhubung dengan halaman ini di `urls.py` dengan mengimpor fungsi edit_product dan menambahkan path `'edit-product/uuid:id'`, misalnya `path('edit-product/uuid:id', edit_product, name='edit_product'),` untuk merujuk ke halaman edit.
+3. Buat fungsi `delete_product` pada file `views.py` untuk menghapus data produk. Gunakan `Product.objects.get(pk=id)` untuk mengambil data produk berdasarkan `id` yang dipilih dan gunakan metode `.delete()` untuk menghapusnya dari database.
+4. Tambahkan URL untuk memanggil fungsi `delete_product` di `urls.py` dengan path `delete-product/uuid:id'`, seperti `path('delete-product/uuid:id', delete_product, name='delete_product')`. URL ini akan mengarahkan ke fungsi `delete_product` untuk menghapus produk yang dipilih dengan tetap pada `redirect` di `product.html`.
 
-### Penjelasan Implementasi Kode Pada Tugas 4 ini:
-
-**1. Mengimplementasikan fungsi registrasi, login, dan logout.**
-1) Membuat fungsi registrasi
-- Aktifkan virtual environment.
-- Tambahkan import ```UserCreationForm``` dan ```messages``` pada ```views.py```.
-- Tambahkan fungsi ```show_signup``` untuk menghasilkan form registrasi dan membuat akun pengguna setelah submit.
-- Buat file HTML baru, ```signup.html```.
-- Tambahkan path URL baru untuk fungsi ```show_signup``` di ```urls.py```.
-
-2) Membuat fungsi login
-- Tambahkan import ```authenticate```, ```login```, dan ```AuthenticationForm``` ke ```views.py```.
-- Buat fungsi ```show_login``` untuk mengautentikasi pengguna.
-- Buat file ```login.html``` pada direktori ```templates```.
-- Tambahkan path URL untuk fungsi ```show_login``` di ```urls.py```.
-
-3) Membuat fungsi logout
-- Tambahkan import ```logout``` di ```views.py```.
-- Tambahkan fungsi ```do_logout``` untuk menghapus session pengguna dan cookie ```last_login```.
-- Tambahkan path URL untuk fungsi ```do_logout``` di ```urls.py```.
-
-4) Membatasi akses halaman main
-- Tambahkan ```@login_required(login_url='/login')``` di atas fungsi ```show_main``` agar hanya pengguna yang login yang bisa mengakses halaman.
-
-**2. Membuat dua akun pengguna dengan masing-masing tiga dummy data.**
-- Buat akun pengguna baru dengan username dan password melalui form registrasi di website.
-- Tambahkan 3 dummy data produk melalui halaman "Add New Product" dengan memasukkan ```name```, ```section```, ```price```, dan ```description``` untuk setiap produk.
-
-**3. Menghubungkan model ```Product``` dengan ```User```.**
-- Pada ```models.py```, impor ```User``` dan tambahkan variabel ```user``` pada class ```Product```.
-- Di ```views.py```, ubah fungsi ```show_product``` dengan menambahkan ```commit=False``` pada ```product``` dan hubungkan field ```user``` dengan ```request.user```.
-- Ubah context menjadi ```user=request.user``` dan tampilkan ```request.user.username``` di template.
-- Simpan perubahan dan jalankan migrasi model.
-
-**4. Menampilkan detail informasi pengguna yang sedang logged in dan menerapkan cookies.**
-- Tambahkan ```HttpResponseRedirect```, ```reverse```, dan ```datetime``` pada ```views.py```.
-- Di fungsi ```show_login```, tambahkan cookie ```last_login``` untuk menyimpan waktu login terakhir pengguna.
-- Tampilkan informasi ```last_login``` pada halaman ```main.html``` melalui context di ```show_main```.
-- Ubah fungsi ```do_logout``` untuk menghapus cookie ```last_login``` saat pengguna logout.
-- Tambahkan kode HTML di ```main.html``` untuk menampilkan sesi login terakhir.
+**B. Mengkustomisasi tampilan web dengan Custom CSS styling**
+1. Kustomisasi halaman `login.html, signup.html,` dan `add_product.html` dengan menggunakan file CSS yang telah disiapkan pada tag `script`. Hindari penggunaan `form.as_table` pada formulir sehingga setiap elemen form dapat diberikan styling yang unik sesuai pada web HomifyInc.
+2. Terapkan styling CSS seperti pengaturan lebar (`width`), tinggi (`height`), dan margin (`margin`) pada form. Bungkus form dalam div terpisah untuk memberikan jarak dan tata letak yang lebih rapi. Sesuaikan bentuk input, button, serta posisi agar form menjadi lebih terstruktur dan menarik.
+3. Modifikasi `product.html` untuk menampilkan daftar produk yang responsif. Jika belum ada produk yang tersimpan, tampilkan gambar beserta teks seperti "No Products Available". Gunakan CSS untuk mengatur `size` dan `alignment` gambar agar tampil proporsional.
+4. Jika ada produk yang tersimpan, tampilkan setiap produk dalam bentuk card dengan detail informasi produk. Gunakan `div` dengan class khusus untuk membuat desain kartu. Tambahkan dua tombol pada setiap card untuk mengedit dan menghapus produk, yang masing-masing dihubungkan ke URL `edit_product` dan `delete_product` menggunakan `{% url 'main:edit_product' attribute.pk %}` dan `{% url 'main:delete_product' attribute.pk %}`.
+5. Kustomisasi elemen navbar pada `main.html` yang berisi navigasi menuju halaman `home, product,` dan `about`. Tambahkan nama user yang sedang login dan tombol logout ketika icon profil ditekan. Gunakan file CSS terpisah untuk memberikan style pada navbar agar tampil menarik dan konsisten.
+6. Implementasikan desain responsif khusus pada navbar dan halaman `product.html`. Gunakan `media queries` pada CSS untuk menyesuaikan tampilan navbar pada perangkat yang lebih kecil, seperti mengubah navbar menjadi menu `sidebar`. Sidebar dibuat dengan `div` class dan custom CSS styling. Tambahkan JavaScript untuk memunculkan atau menyembunyikan `sidebar` pada saat tombol menu (hamburger) ditekan.
