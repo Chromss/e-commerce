@@ -1,9 +1,9 @@
 import re
 from django.forms import *
 from main.models import Product
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.utils.html import strip_tags
 
 class ProductForm(ModelForm):
     variation_count = IntegerField(required=False, initial=0)
@@ -12,6 +12,14 @@ class ProductForm(ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'description', 'image', 'variation_count', 'minimum_price']
+
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        return strip_tags(name)
+
+    def clean_description(self):
+        description = self.cleaned_data["description"]
+        return strip_tags(description)
 
 class UserForm(UserCreationForm):
     fullname = CharField(required=True, initial="")

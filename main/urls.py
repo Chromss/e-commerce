@@ -14,6 +14,7 @@ urlpatterns = [
     path('logout/', do_logout, name='do_logout'),
     path('edit-inventory/<uuid:id>', edit_inventory, name='edit_inventory'),
     path('delete-inventory/<uuid:id>', delete_inventory, name='delete_inventory'),
+    path('add-inventory-direct', add_inventory_direct, name='add_inventory_direct'),
     path('xml/', show_xml, name='show_xml'),
     path('json/', show_json, name='show_json'),
     path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'),

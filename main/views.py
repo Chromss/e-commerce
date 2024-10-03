@@ -1,15 +1,16 @@
 import datetime
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.urls import reverse
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.utils.html import strip_tags
+from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
 from main.models import *
 from main.forms import *
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 
 def show_main(request):
     context = {'last_login': request.COOKIES.get('last_login', 'None')}
@@ -63,8 +64,7 @@ def show_add_inventory(request):
 
 @login_required(login_url='/login')
 def show_product(request):
-    user_products = Product.objects.filter(user=request.user)
-    context = {'name': request.user.username, 'products': user_products}
+    context = {'name': request.user.username}
     return render(request, 'product.html', context)
 
 def edit_inventory(request, id):
@@ -82,8 +82,22 @@ def delete_inventory(request, id):
     product.delete()
     return HttpResponseRedirect(reverse('main:show_product'))
 
+@csrf_exempt
+@require_POST
+def add_inventory_direct(request):
+    name = strip_tags(request.POST.get("name"))
+    description = strip_tags(request.POST.get("description"))
+    image = request.POST.get("image")
+    variation_count = int(request.POST.get('countVar'))
+    minimum_price = int(request.POST.get('minPrice'))
+    user = request.user
+
+    new_product = Product(name=name, description=description, image=image, variation_count=variation_count, minimum_price=minimum_price, user=user) 
+    new_product.save()
+    return HttpResponse(b"CREATED", status=201)
+
 def show_xml(request):
-    data = Product.objects.all()
+    data = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_xml_by_id(request, id):
@@ -91,7 +105,7 @@ def show_xml_by_id(request, id):
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_json(request):
-    data = Product.objects.all()
+    data = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def show_json_by_id(request, id):

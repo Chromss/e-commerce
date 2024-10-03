@@ -367,89 +367,61 @@
     <div class="maintext">Our Top Products For {{ user.username }}</div>
     <div class="mainline"></div>
     <div class="mainframe">
-        {% if products %}
-            {% for product in products %}
-                <div class="productframe">
-                    <img class="pinfo" id="pinfo" src="{% static 'info-button.png' %}">
-                    <div class="ptool" id="ptool">
-                        <img class="pedit" src="{% static 'edit.png' %}" product-id="{{ product.id }}">
-                        <img class="pdelete" src="{% static 'delete.png' %}" product-id="{{ product.id }}">
-                    </div>
-                    <div class="pictframe">
-                        {% if product.image %}
-                            <img class="pictpreview" src="{{ product.image.url }}">
-                        {% endif %}
-                    </div>
-                    <div class="textframe">
-                        <div class="subtextframe">
-                            <div class="pname">{{ product.name }}</div>
-                            <div class="pframe">
-                                <div class="pprop">Variations: <span class="bold">{{ product.variation_count }}</span></div>
-                                <div class="pprop">Price: IDR<span class="bold">{{ product.minimum_price|intcomma }}</span></div>
-                            </div>
-                            <div class="pdesc">{{ product.description }}</div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <div class="shadowframe">
-                <div class="shadowpict"><img src="{% static 'sad-person.png' %}"></div>
-                <div class="shadowtext">No products yet...</div>
-            </div>
-        {% endif %}
+        <div id="product_cards"></div>
     </div>    
 
     <script>
-        let isActive = false;
+        async function getProducts() {
+            return fetch("{% url 'main:show_json' %}").then((res) => res.json());
+        }
+
+        async function refreshProducts() {
+            document.getElementById("product_cards").innerHTML = "";
+            document.getElementById("product_cards").className = "";
+
+            const entries = await getProducts();
+            let htmlString = "";
+            let classNameString = "";
+
+            if (entries.length != 0) {
+                classNameString = "productframe";
+                entries.forEach((item) => {
+                    htmlString += `
+                    <img class="pinfo" id="pinfo" src="{% static 'info-button.png' %}">
+                    <div class="ptool" id="ptool">
+                        <img class="pedit" src="{% static 'edit.png' %}" product-id="${item.pk}">
+                        <img class="pdelete" src="{% static 'delete.png' %}" product-id="${item.pk}">
+                    </div>
+                    <div class="pictframe">
+                        <img class="pictpreview" src="${"{{ MEDIA_URL }}"}${item.fields.image}">
+                    </div>
+                    <div class="textframe">
+                        <div class="subtextframe">
+                            <div class="pname">${item.fields.name}</div>
+                            <div class="pframe">
+                                <div class="pprop">Variations: <span class="bold">${item.fields.variation_count}</span></div>
+                                <div class="pprop">Price: IDR<span class="bold">${item.fields.minimum_price.toLocaleString()}</span></div>
+                            </div>
+                            <div class="pdesc">${item.fields.description}</div>
+                        </div>
+                    </div>
+                    `;
+                });
+            } else {
+                classNameString = "shadowframe";
+                htmlString = `
+                <div class="shadowpict"><img src="{% static 'sad-person.png' %}"></div>
+                <div class="shadowtext">No products yet...</div>
+                `;
+            }
+            document.getElementById("product_cards").className = classNameString;
+            document.getElementById("product_cards").innerHTML = htmlString;
+        }
 
         const overlay = document.getElementById('overlay');
         const addButton = document.getElementById('add');
         const backButton = document.getElementById('back');
         const searchBar = document.getElementById('searchbar');
-        const pInfos = document.querySelectorAll('.pinfo');
-        const pTools = document.querySelectorAll('.ptool');
-        const pEdits = document.querySelectorAll('.pedit');
-        const pDeletes = document.querySelectorAll('.pdelete');
-
-        function updateSearchBar() {
-            const width = window.innerWidth;
-            if (width < 700) {
-                const sbAfter = 500 - (700 - width);
-                searchBar.style.width = sbAfter + 'px';
-            } else {
-                searchBar.style.width = '500px';
-            }
-        }
-
-        window.addEventListener('resize', updateSearchBar);
-        document.addEventListener('DOMContentLoaded', updateSearchBar);
-
-        pInfos.forEach((pInfo, index) => {
-            const pTool = pTools[index];
-            pInfo.addEventListener('click', function() {
-                if (!pTool.style.height || pTool.style.height === '0px') {
-                    pTool.style.height = '140px';
-                } else {
-                    pTool.style.height = '0px';
-                }
-            });
-        });
-
-        pEdits.forEach(pEdit => {
-            pEdit.addEventListener('click', function() {
-                const productId = pEdit.getAttribute('product-id');
-                window.location.href = `/edit-inventory/${productId}`;
-            });
-        });
-
-        pDeletes.forEach(pDelete => {
-            pDelete.addEventListener('click', function() {
-                const productId = pDelete.getAttribute('product-id');
-                alert("Selected product has successfully been deleted!")
-                window.location.href = `/delete-inventory/${productId}`;
-            });
-        });
 
         addButton.addEventListener('click', function() {
             overlay.style.display = 'block';
@@ -469,22 +441,52 @@
             window.location.href = '{% url "main:show_main" %}';
         });
 
-        document.querySelectorAll('.textframe').forEach(textframe => {
-            textframe.addEventListener('mouseleave', () => {
-                const sub = textframe.querySelector('.subtextframe');
-                if (sub) {
-                    sub.scrollTop = 0;
-                }
-            });
-        });
+        function updateSearchBar() {
+            const width = window.innerWidth;
+            if (width < 700) {
+                const sbAfter = 500 - (700 - width);
+                searchBar.style.width = sbAfter + 'px';
+            } else {
+                searchBar.style.width = '500px';
+            }
+        }
+
+        window.addEventListener('resize', updateSearchBar);
+        document.addEventListener('DOMContentLoaded', updateSearchBar);
 
         document.addEventListener('DOMContentLoaded', () => {
-            const productFrames = document.querySelectorAll('.productframe');
-            const shadowFrame = document.querySelector('.shadowframe');
+            refreshProducts();
 
-            if (productFrames.length > 0) {
-                shadowFrame.style.display = 'none';
-            }
+            document.getElementById('product_cards').addEventListener('click', function(event) {
+                const target = event.target;
+
+                if (target.classList.contains('pinfo')) {
+                    const pTool = target.closest('.productframe').querySelector('.ptool');
+                    if (pTool) {
+                        pTool.style.height = pTool.style.height === '140px' ? '0px' : '140px';
+                    }
+                }
+
+                if (target.classList.contains('pedit')) {
+                    const productId = target.getAttribute('product-id');
+                    window.location.href = `/edit-inventory/${productId}`;
+                }
+
+                if (target.classList.contains('pdelete')) {
+                    const productId = target.getAttribute('product-id');
+                    alert("Selected product has successfully been deleted!");
+                    window.location.href = `/delete-inventory/${productId}`;
+                }
+            });
+
+            document.getElementById('product_cards').addEventListener('mouseleave', function(event) {
+                if (event.target.classList.contains('textframe')) {
+                    const sub = event.target.querySelector('.subtextframe');
+                    if (sub) {
+                        sub.scrollTop = 0;
+                    }
+                }
+            });
         });
     </script>
 </body>
