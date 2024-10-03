@@ -126,7 +126,23 @@
             transition: color 0.15s;
         }
 
+        .addtext {
+            font-size: 18px;
+            font-weight: 600;
+            top: 50%;
+            right: 40px;
+            letter-spacing: -0.5px;
+            position: absolute;
+            cursor: pointer;
+            transform: translateY(-50%);
+            transition: color 0.15s;
+        }
+
         .backtext:hover {
+            color: #FFA500;
+        }
+
+        .addtext:hover {
             color: #FFA500;
         }
 
@@ -281,6 +297,17 @@
             font-weight: 700;
         }
 
+        .overlay {
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            z-index: 3;
+            display: none;
+            position: fixed;
+            transition: opacity 0.4s;
+        }
+
         @media (max-width: 767.5px) {
             .maintext {
                 left: 30px;
@@ -289,6 +316,10 @@
 
             .backtext {
                 left: 20px;
+            }
+
+            .addtext {
+                right: 25px;
             }
 
             .mainline {
@@ -327,9 +358,11 @@
 </head>
 <body>
     <div class="topframe"></div>
+    <div class="overlay" id="overlay"></div>
     <div class="searchframe">
         <input class="searchbar" id="searchbar" placeholder="Explore anything you want">
         <div class="backtext" id="back">Back</div>
+        <div class="addtext" id="add">Add</div>
     </div>
     <div class="maintext">Our Top Products For {{ user.username }}</div>
     <div class="mainline"></div>
@@ -370,6 +403,8 @@
     <script>
         let isActive = false;
 
+        const overlay = document.getElementById('overlay');
+        const addButton = document.getElementById('add');
         const backButton = document.getElementById('back');
         const searchBar = document.getElementById('searchbar');
         const pInfos = document.querySelectorAll('.pinfo');
@@ -416,14 +451,23 @@
             });
         });
 
+        addButton.addEventListener('click', function() {
+            overlay.style.display = 'block';
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+            }, 0);
+        });
+
+        overlay.addEventListener('click', function() {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 400);
+        });
+
         backButton.addEventListener('click', () => {
             window.location.href = '{% url "main:show_main" %}';
         });
-
-        // editInventory.addEventListener('click', function() {
-        //     if (!isLoggedIn) alert("Unable to access this menu due to not logged in.")
-        //     
-        // });
 
         document.querySelectorAll('.textframe').forEach(textframe => {
             textframe.addEventListener('mouseleave', () => {
