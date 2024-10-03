@@ -1,0 +1,381 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Archivo', sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.mainframe {
+    height: 115vh;
+    width: 800px;
+    left: 50%;
+    background-color: #ADD8E6;
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.maintext {
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.5px;
+    left: 50%;
+    top: 35px;
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.subtext {
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.5px;
+    left: 50%;
+    top: 70px;
+    position: absolute;
+    white-space: nowrap;
+    transform: translateX(-50%);
+}
+
+.context {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.5px;
+    position: absolute;
+}
+
+.name {
+    top: 150px;
+    left: 30px;
+}
+
+.desc {
+    top: 220px;
+    left: 30px;
+}
+
+.variation {
+    top: 420px;
+    left: 30px;
+}
+
+.image {
+    top: 150px;
+    left: 480px;
+}
+
+.imagesubtext {
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    position: absolute;
+    white-space: nowrap;
+}
+
+.ist1 {
+    font-size: 14px;
+    left: 20px;
+    top: 160px;
+}
+
+.ist2 {
+    font-size: 12px;
+    font-style: italic;
+    color: #FF0000;
+    left: 10px;
+    top: 215px;
+}
+
+.shortinput {
+    padding: 8px;
+    left: 25px;
+    border: 1px solid #D3D3D3;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #333333;
+    background-color: #F9F9F9;
+    outline: none;
+    position: absolute;
+    transition: all 0.1s ease;
+}
+
+.shortinput:focus {
+    border-color: rgba(255, 165, 0, 0.6);
+    box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+}
+
+.shortinput::placeholder {
+    color: #999999;
+}
+
+.longinput {
+    font-family: 'Archivo', sans-serif;
+    padding: 8px;
+    left: 25px;
+    font-size: 16px;
+    border: 1px solid #D3D3D3;
+    border-radius: 10px;
+    color: #333333;
+    background-color: #F9F9F9;
+    outline: none;
+    resize: none;
+    position: absolute;
+    transition: all 0.1s ease;
+}
+
+.longinput:focus {
+    border-color: rgba(255, 165, 0, 0.6);
+    box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+}
+
+.longinput::placeholder {
+    color: #999999;
+}
+
+.productname {
+    top: 170px;
+    width: 400px;
+}
+
+.productdesc {
+    top: 240px;
+    width: 400px;
+    height: 150px;
+}
+
+.variationframe {
+    background-color: #F9F9F9;
+    height: 230px;
+    width: 750px;
+    top: 440px;
+    left: 50%;
+    border-radius: 10px;
+    position: absolute;
+    border: 1px solid #D3D3D3;
+    transform: translateX(-50%);
+}
+
+.varline {
+    position: absolute;
+    width: 720px;
+    height: 1px;
+    top: 40px;
+    left: 50%;
+    background-color: #D3D3D3;
+    transform: translateX(-50%);
+}
+
+.vars-container {
+    position: absolute;
+    width: 735px;
+    height: 180px;
+    top: 45px;
+    left: 15px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+.varbutton {
+    font-family: 'Archivo', sans-serif;
+    position: absolute;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    border-radius: 8px;
+    width: 110px;
+    height: 28px;
+    top: 8px;
+    left: 15px;
+    cursor: pointer;
+    background-color: #FFA500;
+    left: 20px;
+    border: 0px;
+    transition: all 0.1s ease;
+}
+
+.varinput {
+    top: 12px;
+    left: 140px;
+    width: 585px;
+    border: 0px;
+    font-size: 16px;
+    color: #333333;
+    background-color: #F9F9F9;
+    outline: none;
+    position: absolute;
+    transition: all 0.1s ease;
+}
+
+.varpreview {
+    display: inline-block;
+    position: relative;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    height: 25px;
+    border-radius: 10px;
+    padding-left: 8px;
+    padding-right: 35px;
+    border: 1px solid #FFA500;
+    background-color: #E6E6E6;
+}
+
+.vptext {
+    font-size: 13px;
+    padding-top: 5px;
+    padding-left: 8px;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+}
+
+.xsign {
+    position: absolute;
+    width: 10px;
+    height: 1.5px;
+    right: 14px;
+    top: 11px;
+    background-color: #333333;
+}
+
+.xframe {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    right: 15px;
+    top: 8px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.x1 {
+    rotate: 45deg;
+}
+
+.x2 {
+    rotate: 135deg;
+}
+
+.imageframe {
+    background-color: #F9F9F9;
+    height: 236px;
+    width: 295px;
+    top: 170px;
+    left: 475px;
+    border-radius: 10px;
+    position: absolute;
+    border: 1px solid #D3D3D3;
+}
+
+.subimageframe {
+    position: absolute;
+    border: 2px dashed #D3D3D3;
+    border-radius: 6px;
+    width: 262px;
+    height: 130px;
+    top: 15px;
+    left: 15px;
+    display: block;
+}
+
+.images-container {
+    position: absolute;
+    width: 280px;
+    height: 130px;
+    top: 15px;
+    left: 15px;
+}
+
+.imagepreview {
+    width: 45px;
+    height: 45px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    object-fit: cover;
+    border: 2px solid #E3E3E3;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.imagepreview:hover {
+    border-color: rgba(255, 165, 0, 0.6);
+    box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+}
+
+.siftext {
+    position: absolute;
+    white-space: nowrap;
+    opacity: 0.3;
+    font-size: 16px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.imagebtn {
+    font-family: 'Archivo', sans-serif;
+    position: absolute;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    border-radius: 8px;
+    width: 122px;
+    height: 30px;
+    top: 180px;
+    transition: all 0.1s ease;
+}
+
+.upload {
+    cursor: pointer;
+    background-color: #FFA500;
+    left: 20px;
+    border: 0px;
+}
+
+.upload:hover {
+    background-color: #E2980F;
+    border-color: rgba(255, 165, 0, 0.6);
+    box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+}
+
+.delete {
+    color: rgba(113, 113, 113, 0.4);
+    background-color: #E6E6E6;
+    left: 154px;
+    border: 2px solid rgba(255, 165, 0, 0.2);
+}
+
+.mainbutton {
+    font-family: 'Archivo', sans-serif;
+    position: absolute;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    border-radius: 8px;
+    width: 200px;
+    height: 35px;
+    top: 740px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.mainbutton:hover {
+    border-color: rgba(255, 165, 0, 0.6);
+    box-shadow: 0 0 3px rgba(255, 165, 0, 0.5);
+}
+
+.save {
+    background-color: #FFA500;
+    left: 195px;
+    border: 0px;
+}
+
+.save:hover {
+    background-color: #E2980F;
+}
+
+.back {
+    background-color: #E6E6E6;
+    right: 195px;
+    border: 2px solid rgba(255, 165, 0, 1);
+}
+
+.back:hover {
+    background-color: #D8D8D8;
+}
