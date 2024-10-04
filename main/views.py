@@ -87,7 +87,7 @@ def delete_inventory(request, id):
 def add_inventory_direct(request):
     name = strip_tags(request.POST.get("name"))
     description = strip_tags(request.POST.get("description"))
-    image = request.POST.get("image")
+    image = request.FILES.get("image")
     variation_count = int(request.POST.get('countVar'))
     minimum_price = int(request.POST.get('minPrice'))
     user = request.user

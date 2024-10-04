@@ -6,7 +6,7 @@ body, html {
     overflow-y: auto;
 }
 
-.mainframe {
+.mainrec {
     height: 115vh;
     width: 800px;
     left: 50%;
@@ -15,7 +15,7 @@ body, html {
     transform: translateX(-50%);
 }
 
-.maintext {
+.maintitle {
     font-weight: 700;
     font-size: 32px;
     letter-spacing: -0.5px;

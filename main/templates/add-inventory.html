@@ -12,8 +12,8 @@
 <body>
     <form action="{% url 'main:show_add_inventory' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="mainframe">
-            <div class="maintext">Add, Customize Your Item</div>
+        <div class="mainrec">
+            <div class="maintitle">Add, Customize Your Item</div>
             <div class="subtext">You can add your collection along with its image, description, price, and variety.</div>
             <div class="context name">Product Name</div>
             <input class="shortinput productname" name="name" id="namein" placeholder="Enter your product name" required>
@@ -25,7 +25,7 @@
                 <button class="imagebtn upload" id="upload" type="button">Upload</button>
                 <button class="imagebtn delete" id="delete" type="button">Delete</button>
                 <div class="images-container" id="imagesContainer"></div>
-                <div class="subimageframe" id="sif">
+                <div class="subimageframe">
                     <div class="siftext">No uploaded image</div>
                 </div>
                 <div class="imagesubtext ist1">Number of image: 0 (up to 10)</div>

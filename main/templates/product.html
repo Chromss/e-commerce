@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
+    <link rel="stylesheet" href="{% static 'add-inventory-form.css' %}">
     <title>Product | HomifyInc</title>
 
     <style>
@@ -304,6 +305,8 @@
             z-index: 3;
             display: none;
             position: fixed;
+            overflow-y: auto;
+            scrollbar-width: none;
             transition: opacity 0.4s;
         }
 
@@ -357,10 +360,48 @@
 </head>
 <body>
     <div class="topframe"></div>
-    <div class="overlay" id="overlay"></div>
+    <div class="overlay" id="overlay">
+        <div id="crudModal">
+            <div id="crudModalContent" style="height: calc(115vh + 100px);">
+                <form action="{% url 'main:show_add_inventory' %}" method="post" enctype="multipart/form-data">
+                    <div class="mainrec" style="margin-top: 50px; border-radius: 32px;">
+                        <div class="maintitle">Add, Customize Your Item</div>
+                        <div class="subtext">You can add your collection along with its image, description, price, and variety.</div>
+                        <div class="context name">Product Name</div>
+                        <input class="shortinput productname" name="name" id="namein" placeholder="Enter your product name" required>
+                        <div class="context desc">Product Description</div>
+                        <textarea class="longinput productdesc" name="description" id="descin" placeholder="Enter your product description" required></textarea>
+                        <div class="context image">Product Image</div>
+                        <div class="imageframe">
+                            <input type="file" name="image" id="filein" style="display: none;" accept=".png, .jpg, .jpeg">
+                            <button class="imagebtn upload" id="upload" type="button">Upload</button>
+                            <button class="imagebtn delete" id="delete" type="button">Delete</button>
+                            <div class="images-container" id="imagesContainer"></div>
+                            <div class="subimageframe">
+                                <div class="siftext">No uploaded image</div>
+                            </div>
+                            <div class="imagesubtext ist1">Number of image: 0 (up to 10)</div>
+                            <div class="imagesubtext ist2">*Maximum number of image is reached!</div>
+                        </div>
+                        <div class="context variation">Product Variation</div>
+                        <div class="variationframe" method="post" enctype="multipart/form-data">
+                            <button class="varbutton" type="button" id="variety">Add Variation</button>
+                            <input class="varinput" id="varvalue" placeholder="Write your variation...">
+                            <div class="varline"></div>
+                            <div class="vars-container"></div>
+                        </div>
+                        <button class="mainbutton save" id="save" type="submit">Save</button>
+                        <button class="mainbutton back" id="back" type="button">Back</button>
+                        <input type="hidden" name="countVar" id="cntVar" value="0">
+                        <input type="hidden" name="minPrice" id="minPrc" value="0">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="searchframe">
         <input class="searchbar" id="searchbar" placeholder="Explore anything you want">
-        <div class="backtext" id="back">Back</div>
+        <div class="backtext" id="backpg">Back</div>
         <div class="addtext" id="add">Add</div>
     </div>
     <div class="maintext">Our Top Products For {{ user.username }}</div>
@@ -375,70 +416,249 @@
         }
 
         async function refreshProducts() {
-            document.getElementById("product_cards").innerHTML = "";
-            document.getElementById("product_cards").className = "";
-
+            const productCards = document.getElementById('product_cards');
             const entries = await getProducts();
             let htmlString = "";
-            let classNameString = "";
+            let classNameString = "productframe";
 
-            if (entries.length != 0) {
-                classNameString = "productframe";
+            productCards.innerHTML = "";
+            if (entries.length !== 0) {
                 entries.forEach((item) => {
                     htmlString += `
-                    <img class="pinfo" id="pinfo" src="{% static 'info-button.png' %}">
-                    <div class="ptool" id="ptool">
-                        <img class="pedit" src="{% static 'edit.png' %}" product-id="${item.pk}">
-                        <img class="pdelete" src="{% static 'delete.png' %}" product-id="${item.pk}">
-                    </div>
-                    <div class="pictframe">
-                        <img class="pictpreview" src="${"{{ MEDIA_URL }}"}${item.fields.image}">
-                    </div>
-                    <div class="textframe">
-                        <div class="subtextframe">
-                            <div class="pname">${item.fields.name}</div>
-                            <div class="pframe">
-                                <div class="pprop">Variations: <span class="bold">${item.fields.variation_count}</span></div>
-                                <div class="pprop">Price: IDR<span class="bold">${item.fields.minimum_price.toLocaleString()}</span></div>
+                        <div class="${classNameString}">
+                            <img class="pinfo" id="pinfo" src="{% static 'info-button.png' %}">
+                            <div class="ptool" id="ptool">
+                                <img class="pedit" src="{% static 'edit.png' %}" product-id="${item.pk}">
+                                <img class="pdelete" src="{% static 'delete.png' %}" product-id="${item.pk}">
                             </div>
-                            <div class="pdesc">${item.fields.description}</div>
+                            <div class="pictframe">
+                                <img class="pictpreview" src="${"{{ MEDIA_URL }}"}${item.fields.image}">
+                            </div>
+                            <div class="textframe">
+                                <div class="subtextframe">
+                                    <div class="pname">${item.fields.name}</div>
+                                    <div class="pframe">
+                                        <div class="pprop">Variations: <span class="bold">${item.fields.variation_count}</span></div>
+                                        <div class="pprop">Price: IDR<span class="bold">${item.fields.minimum_price.toLocaleString()}</span></div>
+                                    </div>
+                                    <div class="pdesc">${item.fields.description}</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
                     `;
                 });
             } else {
-                classNameString = "shadowframe";
                 htmlString = `
-                <div class="shadowpict"><img src="{% static 'sad-person.png' %}"></div>
-                <div class="shadowtext">No products yet...</div>
+                    <div class="shadowframe">
+                        <div class="shadowpict"><img src="{% static 'sad-person.png' %}"></div>
+                        <div class="shadowtext">No products yet...</div>
+                    </div>
                 `;
             }
-            document.getElementById("product_cards").className = classNameString;
-            document.getElementById("product_cards").innerHTML = htmlString;
+            productCards.innerHTML = htmlString;
         }
 
+        // =============================================================================== FROM ADD-INVENTORY
+        
+        let selectedImage = null;
+        let countVar = 0;
+        let minPrice = 0;
+
+        const uploadButton = document.getElementById('upload');
+        const deleteButton = document.getElementById('delete');
+        const imagesContainer = document.getElementById('imagesContainer');
+        const fileIn = document.getElementById('filein');
+        const imagePreview = document.getElementById('imagePreview');
+        const inventoryForm = document.getElementById('inventoryForm');
+        const variety = document.getElementById('variety');
+        
+        const varButton = document.querySelector('.varbutton');
+        const sifText = document.querySelector('.siftext');
+        const ist1 = document.querySelector('.ist1');
+        const ist2 = document.querySelector('.ist2');
+    
+        function updateImageCount() {
+            const imageCount = imagesContainer.children.length;
+            ist1.textContent = `Number of image: ${imageCount} (up to 10)`;
+        }
+
+        function updateState() {
+            if (imagesContainer.children.length >= 10) {
+                uploadButton.disabled = true;
+                ist2.style.display = 'block';
+            } else {
+                uploadButton.disabled = false;
+                ist2.style.display = 'none';
+            }
+            updateImageCount();
+        }
+
+        function updateHiddenInputs() {
+            document.getElementById('cntVar').value = countVar;
+            document.getElementById('minPrc').value = minPrice;
+        }
+
+        function formatPrice(query) {
+            const parts = query.split(':');
+            const style = parts[0].trim();
+            const price = parseInt(parts[1].trim(), 10);
+            const formattedPrice = price.toLocaleString('en-ID');
+            return `${style}: IDR${formattedPrice}`;
+        }
+
+        variety.addEventListener('click', (event) => {
+            const varAmount = document.getElementById('varvalue').value.trim();
+            if (varAmount) {
+                curPrice = parseInt(varAmount.split(':')[1]);
+                minPrice = countVar == 0 ? curPrice : Math.min(minPrice, curPrice);
+                countVar++;
+                updateHiddenInputs();
+            }
+        });
+        
+        document.addEventListener('click', function(event) {
+            if (selectedImage && !selectedImage.contains(event.target) && !deleteButton.contains(event.target)) {
+                selectedImage.style.borderColor = '#E3E3E3';
+                selectedImage = null;
+
+                deleteButton.disabled = true;
+                deleteButton.style.cursor = 'auto';
+                deleteButton.style.color = 'rgba(113, 113, 113, 0.4)';
+                deleteButton.style.border = '2px solid rgba(255, 165, 0, 0.2)';
+            }
+        });
+
+        uploadButton.addEventListener('click', function() {
+            if (imagesContainer.children.length < 10) {
+                fileIn.click();
+                ist2.style.display = 'none';
+            } else {
+                ist2.style.display = 'block';
+            }
+        });
+
+        deleteButton.addEventListener('click', function() {
+            if (selectedImage) {
+                imagesContainer.removeChild(selectedImage);
+                selectedImage = null;
+
+                deleteButton.disabled = true;
+                deleteButton.style.cursor = 'auto';
+                deleteButton.style.color = 'rgba(113, 113, 113, 0.4)';
+                deleteButton.style.border = '2px solid rgba(255, 165, 0, 0.2)';
+                
+                if (imagesContainer.children.length === 0) {
+                    const subimageframe = document.querySelector('.subimageframe');
+                    subimageframe.style.display = 'block';
+                }
+
+                if (imagesContainer.children.length === 10) {
+                    ist2.style.display = 'none';
+                }
+                
+                updateState();
+            }
+        });
+    
+        fileIn.addEventListener('change', function(event) {
+            const files = event.target.files;
+            const subimageframe = document.querySelector('.subimageframe');
+    
+            if (files.length > 0) {
+                subimageframe.style.display = 'none';
+            } else {
+                subimageframe.style.display = 'block';
+            }
+    
+            Array.from(files).forEach(file => {
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const image = new Image();
+                        image.onload = function() {
+                            if (image.width >= 128 && image.height >= 128) {
+                                if (imagesContainer.children.length < 10) {
+                                    const imgElement = document.createElement('img');
+                                    imgElement.src = e.target.result;
+                                    imgElement.className = 'imagepreview';
+                                    
+                                    imgElement.addEventListener('click', function() {
+                                        if (selectedImage) {
+                                            selectedImage.style.borderColor = '#E3E3E3';
+                                        }
+                                        selectedImage = imgElement;
+                                        imgElement.style.borderColor = 'rgba(255, 165, 0, 0.6)';
+                                        deleteButton.disabled = false;
+                                        deleteButton.style.cursor = 'pointer';
+                                        deleteButton.style.border = '2px solid rgba(255, 165, 0, 1)';
+                                        deleteButton.style.color = 'rgba(0, 0, 0, 1)';
+                                    });
+
+                                    imagesContainer.appendChild(imgElement);
+                                    updateImageCount();
+                                } else {
+                                    ist2.style.display = 'block';
+                                }
+                            } else {
+                                alert('Please upload an image with at least 128x128 pixels.');
+                            }
+                        };
+                        image.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        updateState();
+
+        varButton.addEventListener('click', function() {
+            const varInput = document.querySelector('.varinput');
+            const varValue = varInput.value.trim();
+
+            if (varValue && varValue.length <= 50) {
+                const varsContainer = document.querySelector('.vars-container');
+                const varPreview = document.createElement('div');
+                const vpText = document.createElement('div');
+                const xSign1 = document.createElement('div');
+                const xSign2 = document.createElement('div');
+                const xFrame = document.createElement('div');
+
+                varPreview.className = 'varpreview';
+                vpText.className = 'vptext';
+                vpText.textContent = formatPrice(varValue);
+                xFrame.className = 'xframe';
+                xSign1.className = 'xsign x1';
+                xSign2.className = 'xsign x2';
+
+                varPreview.appendChild(vpText);
+                varPreview.appendChild(xFrame);
+                varPreview.appendChild(xSign1);
+                varPreview.appendChild(xSign2);
+                varsContainer.appendChild(varPreview);
+
+                xFrame.addEventListener('click', function() {
+                    varPreview.remove();
+                    countVar--;
+                    updateHiddenInputs();
+                });
+
+                varInput.value = '';
+            } else {
+                alert('Please enter a valid variation text (max 50 characters).');
+            }
+        });
+        // =============================================================================== FROM ADD-INVENTORY
+
+        const form = document.querySelector('form');
         const overlay = document.getElementById('overlay');
         const addButton = document.getElementById('add');
-        const backButton = document.getElementById('back');
+        const backButton = document.getElementById('backpg');
+        const saveInner = document.getElementById('save');
+        const backInner = document.getElementById('back');
         const searchBar = document.getElementById('searchbar');
-
-        addButton.addEventListener('click', function() {
-            overlay.style.display = 'block';
-            setTimeout(() => {
-                overlay.style.opacity = '1';
-            }, 0);
-        });
-
-        overlay.addEventListener('click', function() {
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 400);
-        });
-
-        backButton.addEventListener('click', () => {
-            window.location.href = '{% url "main:show_main" %}';
-        });
+        const productCards = document.getElementById('product_cards');
+        const subImageFrame = document.querySelector('.subimageframe');
 
         function updateSearchBar() {
             const width = window.innerWidth;
@@ -450,27 +670,75 @@
             }
         }
 
+        function resetForm() {
+            const varsContainer = document.querySelector('.vars-container')
+
+            form.reset();
+            while (imagesContainer.firstChild) {
+                imagesContainer.removeChild(imagesContainer.firstChild);
+            }
+            while (varsContainer.firstChild) {
+                varsContainer.removeChild(varsContainer.firstChild);
+            }
+            updateImageCount();
+            subImageFrame.style.display = 'block';
+            document.getElementById('cntVar').value = 0;
+            document.getElementById('minPrc').value = 0;
+        }
+
+        backButton.addEventListener('click', () => {
+            window.location.href = '{% url "main:show_main" %}';
+        });
+        
+        addButton.addEventListener('click', function() {
+            overlay.style.display = 'block';
+            setTimeout(() => {overlay.style.opacity = '1';}, 0);
+        });
+
+        saveInner.addEventListener('click', async (event) => {
+            let name = document.getElementById("namein").value;
+            let description = document.getElementById('descin').value;
+            event.preventDefault();
+            if (!name || !description) {
+                alert("Please complete all required fields.");
+            } else {
+                const response = await fetch("{% url 'main:add_inventory_direct' %}", {
+                    method: 'POST',
+                    body: new FormData(form),
+                });
+                if (response.ok) {
+                    alert("New inventory has been added!");
+                    minPrice = Math.round(minPrice);
+                    updateHiddenInputs();
+                    refreshProducts();
+                    resetForm();
+                }
+            }
+        });
+
+        backInner.addEventListener('click', function() {
+            overlay.style.opacity = '0';
+            setTimeout(() => {resetForm();}, 400);
+            setTimeout(() => {overlay.style.display = 'none';}, 400);
+        });
+
         window.addEventListener('resize', updateSearchBar);
         document.addEventListener('DOMContentLoaded', updateSearchBar);
 
         document.addEventListener('DOMContentLoaded', () => {
             refreshProducts();
-
-            document.getElementById('product_cards').addEventListener('click', function(event) {
+            productCards.addEventListener('click', function(event) {
                 const target = event.target;
-
                 if (target.classList.contains('pinfo')) {
                     const pTool = target.closest('.productframe').querySelector('.ptool');
                     if (pTool) {
                         pTool.style.height = pTool.style.height === '140px' ? '0px' : '140px';
                     }
                 }
-
                 if (target.classList.contains('pedit')) {
                     const productId = target.getAttribute('product-id');
                     window.location.href = `/edit-inventory/${productId}`;
                 }
-
                 if (target.classList.contains('pdelete')) {
                     const productId = target.getAttribute('product-id');
                     alert("Selected product has successfully been deleted!");
@@ -478,7 +746,7 @@
                 }
             });
 
-            document.getElementById('product_cards').addEventListener('mouseleave', function(event) {
+            productCards.addEventListener('mouseleave', function(event) {
                 if (event.target.classList.contains('textframe')) {
                     const sub = event.target.querySelector('.subtextframe');
                     if (sub) {

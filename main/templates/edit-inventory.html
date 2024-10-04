@@ -221,10 +221,10 @@
         </div>
         <form method="POST">
             {% csrf_token %}
-            <input class="shortinput pname-input" name="name" placeholder="{{ product.name }}">
-            <textarea class="pdesc-input" name="description" placeholder="{{ product.description }}"></textarea>
-            <input class="shortinput pvarcnt-input" name="variation_count" placeholder="{{ product.variation_count }}">
-            <input class="shortinput pprice-input" name="minimum_price" placeholder="{{ product.minimum_price }}">
+            <input class="shortinput pname-input" name="name" placeholder="{{ product.name }}" value="{{ product.name }}">
+            <textarea class="pdesc-input" name="description" placeholder="{{ product.description }}">{{ product.description }}</textarea>
+            <input class="shortinput pvarcnt-input" name="variation_count" placeholder="{{ product.variation_count }}" value="{{ product.variation_count }}">
+            <input class="shortinput pprice-input" name="minimum_price" placeholder="{{ product.minimum_price }}" value="{{ product.minimum_price }}">
             <button class="mainbutton save" type="submit" id="save">Save</button>
         </form>
         <img class="imagepreview" src="{{ product.image.url }}">
