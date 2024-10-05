@@ -17,10 +17,11 @@
             font-family: 'Archivo', sans-serif;
             overflow-x: hidden;
             overflow-y: auto;
+            scrollbar-width: none;
         }
 
         .navbar {
-            position: fixed;
+            position: absolute;
             width: 100vw;
             height: 75px;
         }
@@ -31,9 +32,10 @@
             z-index: 3;
             left: -320px;
             background-color: #FFFFFF;
-            position: absolute;
+            position: fixed;
             transition: left 0.4s;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         .imgprofile {
@@ -94,6 +96,10 @@
             top: 75px;
             background-color: #ADD8E6;
             position: absolute;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar {
@@ -194,23 +200,29 @@
             position: relative;    
         }
 
-        .textcomingsoon {
+        .innertext {
             text-wrap: nowrap;
             font-style: normal;
-            position: absolute;
+            position: relative;
             cursor: pointer;
             font-size: 22px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            left: 50%;
-            top: 50%;
-            transform: translateX(-50%) translateY(-50%) scale(1);
+            transform: scale(1);
             transition: color 0.2s, transform 0.2s;
         }
 
-        .textcomingsoon:hover {
+        .innertext:hover {
             color: #FFA500;
-            transform: translateX(-50%) translateY(-50%) scale(1.1);;
+            transform: scale(1.1);;
+        }
+
+        .innerimg {
+            display: none;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin-bottom: 16px;
         }
 
         .texttoppanel {
@@ -232,6 +244,38 @@
 
         .ttp2 {
             top: 125px;
+        }
+
+        .maincontent {
+            position: absolute;
+            top: 400px;
+            left: 80px;
+        }
+
+        .framecontent {
+            align-items: center;
+            display: flex;
+            position: relative;
+            width: 900px;
+        }
+
+        .titletext {
+            display: none;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            background-color: #FFD26D;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            font-weight: 700;
+            font-size: 32px;
+        }
+
+        .imgcontent {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            margin: 48px;
         }
 
         .overlay {
@@ -367,13 +411,48 @@
 {% block content %}
 <body>
     <div class="mainrectangle">
-        <div class="textcomingsoon">Stay Tune for Full Features!</div>
+        <img class="innerimg" src="{% static 'thinking.png' %}" id="innerimg">
+        <div class="innertext" id="innertext">Looking for perfect goods?</div>
     </div>
     <div class="toppanel">
         <div class="textlogo textlogo2">Welcome, {{ user.username|default:"None" }}!</div>
         <div class="textintro">Last Login: {{ last_login }}</div>
         <div class="texttoppanel ttp1" id="add-inventory">Add Inventory</div>
         <div class="texttoppanel ttp2" id="edit-inventory">Edit Inventory</div>
+    </div>
+    <div class="maincontent" id="content">
+        <div class="titletext" id="title1"></div>
+        <div class="framecontent">
+            <img class="imgcontent" src="{% static 'home1.png' %}">
+            <p style="word-spacing: 1px; line-height: 130%;">
+                Welcome to HomifyInc, 
+                <strong>Your Premier Home Essentials Provider</strong>! 
+                Explore our vast selection of curated home products with ease and excitement. 
+                Whether you're redecorating or stocking up, our intuitive platform empowers you to discover related essentials effortlessly. 
+                Enjoy the freedom to mix, match, and find unique solutions that elevate your space. 
+                At HomifyInc, your journey to a beautifully furnished home is just a click away!
+            </p>
+        </div>
+        <div class="titletext" id="title2" style="margin-top: 40px; margin-left: 770px;"></div>
+        <div class="framecontent" style="margin-left: auto;">
+            <p style="word-spacing: 1px; line-height: 130%; text-align: right;">
+                At HomifyInc, you have the power to bring your ideas to life! 
+                <strong>Effortlessly add and customize products</strong> to reflect your unique style and vision. 
+                Whether it’s trendy home essentials or one-of-a-kind treasures, our platform allows you to showcase your offerings with personalized touches that grab attention. 
+                With just a few clicks, you can make your products stand out and attract the right buyers. Yes, few clicks!
+            </p>
+            <img class="imgcontent" src="{% static 'home2.png' %}">
+        </div>
+        <div class="titletext" id="title3" style="margin-top: 40px;"></div>
+        <div class="framecontent">
+            <img class="imgcontent" src="{% static 'home3.png' %}">
+            <p style="word-spacing: 1px; line-height: 130%;">
+                Your journey to a world of possibilities begins with a simple step—sign up and log in! 
+                <strong>Unlock exclusive features designed</strong> to enhance your shopping experience, from personalized recommendations to 
+                special offers tailored just for you. Don’t miss out on the full potential of HomifyInc—register today and 
+                discover a vibrant community where your ideas can flourish. The gateway to more awaits, and it’s just a click away!
+            </p>
+        </div>
     </div>
     <div class="navbar">
         <div class="for-mobile">
@@ -402,7 +481,6 @@
     </div>
     <div class="userinfo" id="user">
         <div class="userinfo-frame" id="userinfo">
-            <!-- <div class="userinfo-title">{{ user.fullname }}</div> -->
             <div class="userinfo-text">{{ user.username }}</div>
             <div class="userinfo-logout" id="logout">Logout</div>
         </div>
@@ -414,6 +492,7 @@
         let isLoggedIn = document.getElementById('loggedin').value === 'True';
         let isVisible = false;
         let isMenuVis = false;
+        let isInnerDown = false;
 
         const overlay = document.getElementById('overlay');
         const shadowsidebar = document.querySelector('.shadowsidebar');
@@ -429,18 +508,13 @@
         const showUser = document.getElementById('user');
         const imageIcon = document.getElementById('imgprofile');
         const about = document.getElementById('about');
+        const content = document.getElementById('content');
+        const innerText = document.getElementById('innertext');
+        const innerImg = document.getElementById('innerimg');
         const logout = document.getElementById('logout');
-
-        function checkViewport() {
-            if (window.innerWidth < 768) {
-                document.querySelector('.for-mobile').style.display = 'block';
-            } else {
-                document.querySelector('.for-mobile').style.display = 'none';
-            }
-        }
-
-        checkViewport();
-        window.addEventListener('resize', checkViewport);
+        const title1 = document.getElementById('title1');
+        const title2 = document.getElementById('title2');
+        const title3 = document.getElementById('title3');
 
         if (!isLoggedIn) {
             toLogin.style.display = 'block';
@@ -450,11 +524,60 @@
             imageIcon.style.display = 'block';
         }
 
-        function getSurname(input) {
-            const idx = input.indexOf(' ');
-            if (idx === -1) return input;
-            return input.substring(0, idx);
+        function checkViewport() {
+            if (window.innerWidth < 768) {
+                document.querySelector('.for-mobile').style.display = 'block';
+            } else {
+                document.querySelector('.for-mobile').style.display = 'none';
+            }
         }
+
+        function dynamicContent() {
+            const width = window.innerWidth;
+            const fixWidth = screen.width;
+            if (width < fixWidth) {
+                const mcAfter = 1370 - (fixWidth - width);
+                content.style.width = mcAfter + 'px';
+            } else {
+                content.style.width = '1370px';
+            }
+        }
+
+        function titleAnimation(element, text) {
+            element.style.width = '0';
+            element.style.paddingLeft = '0';
+            element.style.paddingRight = '0';
+            element.textContent = text;
+            element.style.display = 'block';
+
+            element.getBoundingClientRect();
+            element.style.transition = 'width 0.5s ease, padding 0.00001s ease';
+            element.style.paddingLeft = '24px';
+            element.style.paddingRight = '24px';
+            const fullWidth = element.scrollWidth + 'px';
+            element.style.width = fullWidth;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            titleAnimation(title1, "Your Premier Home Essentials Provider");
+            titleAnimation(title2, "Tailor Your Offerings, Gain Attention!");
+            titleAnimation(title3, "Your Gateway to More Awaits!");
+        });
+
+        checkViewport();
+        dynamicContent();
+        window.addEventListener('resize', checkViewport);
+        window.addEventListener('resize', dynamicContent);
+
+        innerText.addEventListener('click', function() {
+            if (!isInnerDown) {
+                isInnerDown = true;
+                innerImg.style.display = 'block';
+            } else {
+                isInnerDown = false;
+                innerImg.style.display = 'none';
+            }
+        });
 
         showMenu.addEventListener('click', function(event) {
             event.stopPropagation();
