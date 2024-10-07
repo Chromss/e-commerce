@@ -233,13 +233,15 @@
     <script>
         const saveButton = document.getElementById('save');
         const backButton = document.getElementById('back');
+        const previousUrl = "{{ previous_url }}";
 
         saveButton.addEventListener('click', () => {
             alert("The product has successfully been edited!");
         });
 
         backButton.addEventListener('click', () => {
-            window.location.href = "{% url 'main:show_product' %}";
+            if (previousUrl && previousUrl !== "") window.location.href = previousUrl;
+            else window.location.href = "{% url 'main:show_main' %}";
         });
     </script>    
 </body>

@@ -36,6 +36,7 @@
             transition: left 0.4s;
             overflow-x: hidden;
             overflow-y: auto;
+            scrollbar-width: none;
         }
 
         .imgprofile {
@@ -225,10 +226,32 @@
             margin-bottom: 16px;
         }
 
+        .tpframe {
+            position: absolute;
+            overflow: hidden;
+            left: 40px;
+            top: 142px;
+            width: 260px;
+            height: 0px;
+            transition: height 0.5s ease;
+        }
+
+        .tpimage {
+            position: absolute;
+            object-fit: cover;
+            cursor: pointer;
+            width: 12px;
+            height: 12px;
+            left: 20px;
+            top: 128px;
+            transform: rotate(90deg);
+            transition: transform 0.15s ease;
+        }
+
         .texttoppanel {
             position: absolute;
             font-size: 22;
-            left: 20px;
+            left: 40px;
             letter-spacing: -0.5px;
             cursor: pointer;
             transition: color 0.15s;
@@ -244,6 +267,21 @@
 
         .ttp2 {
             top: 125px;
+        }
+
+        .plist {
+            position: relative;
+            cursor: pointer;
+            white-space: nowrap;
+            margin: 8px;
+            font-size: 22;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            transition: color 0.15s;
+        }
+
+        .plist:hover {
+            color: #FFA500;
         }
 
         .maincontent {
@@ -419,6 +457,12 @@
         <div class="textintro">Last Login: {{ last_login }}</div>
         <div class="texttoppanel ttp1" id="add-inventory">Add Inventory</div>
         <div class="texttoppanel ttp2" id="edit-inventory">Edit Inventory</div>
+        <img class="tpimage" id="tpimage" src="{% static 'expand.png' %}">
+        <div class="tpframe" id="tpframe">
+            {% for product in products %}
+                <div class="plist" product-id="{{ product.id }}">{{ product.name }}</div>
+            {% endfor %}
+        </div>
     </div>
     <div class="maincontent" id="content">
         <div class="titletext" id="title1"></div>
@@ -493,12 +537,16 @@
         let isVisible = false;
         let isMenuVis = false;
         let isInnerDown = false;
+        let isExpanded = false;
 
         const overlay = document.getElementById('overlay');
         const shadowsidebar = document.querySelector('.shadowsidebar');
         const showMenu = document.querySelector('.showmenu');
         const ssbMobile = document.getElementById('ssbmobile')
         const toppanel = document.querySelector('.toppanel');
+        const tpImage = document.getElementById('tpimage');
+        const tpFrame = document.getElementById('tpframe');
+        const pList = document.querySelectorAll('.plist');
         const addinventory = document.getElementById('add-inventory');
         const editInventory = document.getElementById('edit-inventory');
         const toProduct = document.getElementById('product');
@@ -558,6 +606,20 @@
             element.style.width = fullWidth;
         }
 
+        function expandProduct() {
+            if (!isExpanded) {
+                tpImage.style.transform = 'rotate(180deg)';
+                tpFrame.style.height = '0';
+                const fullH = tpFrame.scrollHeight + 'px';
+                tpFrame.style.height = fullH;
+                isExpanded = true;
+            } else {
+                tpImage.style.transform = 'rotate(90deg)'
+                tpFrame.style.height = '0';
+                isExpanded = false;
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             titleAnimation(title1, "Your Premier Home Essentials Provider");
             titleAnimation(title2, "Tailor Your Offerings, Gain Attention!");
@@ -568,6 +630,17 @@
         dynamicContent();
         window.addEventListener('resize', checkViewport);
         window.addEventListener('resize', dynamicContent);
+        tpImage.addEventListener('click', expandProduct);
+        editInventory.addEventListener('click', expandProduct);
+
+        pList.forEach(function(p) {
+            p.addEventListener('click', function(event) {
+                const productId = event.target.getAttribute('product-id');
+                if (productId) {
+                    window.location.href = `/edit-inventory/${productId}`;
+                }
+            });
+        });
 
         innerText.addEventListener('click', function() {
             if (!isInnerDown) {

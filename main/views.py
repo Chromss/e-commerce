@@ -13,7 +13,8 @@ from main.models import *
 from main.forms import *
 
 def show_main(request):
-    context = {'last_login': request.COOKIES.get('last_login', 'None')}
+    products = Product.objects.all()
+    context = {'last_login': request.COOKIES.get('last_login', 'None'), 'products': products}
     return render(request, 'main.html', context)
 
 def show_signup(request):
@@ -70,11 +71,12 @@ def show_product(request):
 def edit_inventory(request, id):
     product = Product.objects.get(pk=id)
     form = ProductForm(request.POST or None, instance=product)
+    previous_url = request.META.get('HTTP_REFERER', '')
 
     if form.is_valid() and request.method == "POST":
         form.save()
         return HttpResponseRedirect(reverse('main:show_product'))
-    context = {'form': form, 'product': product}
+    context = {'form': form, 'product': product, 'previous_url': previous_url}
     return render(request, "edit-inventory.html", context)
 
 def delete_inventory(request, id):
