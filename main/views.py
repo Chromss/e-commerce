@@ -13,7 +13,10 @@ from main.models import *
 from main.forms import *
 
 def show_main(request):
-    products = Product.objects.all()
+    if request.user.is_authenticated:
+        products = Product.objects.filter(user=request.user)
+    else:
+        products = None
     context = {'last_login': request.COOKIES.get('last_login', 'None'), 'products': products}
     return render(request, 'main.html', context)
 
